@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Consultec</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Navbar */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 60px;
+      background: #fff;
+      border-bottom: 1px solid #eee;
+    }
+    .navbar .logo {
+      font-size: 20px;
+      font-weight: bold;
+      color: #1e40af;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .navbar nav a {
+      margin: 0 15px;
+      text-decoration: none;
+      color: #444;
+      font-weight: 500;
+    }
+    .navbar .buttons a {
+      text-decoration: none;
+      padding: 8px 18px;
+      border-radius: 6px;
+      font-weight: 500;
+    }
+    .navbar .buttons .login {
+      color: #1e40af;
+    }
+    .navbar .buttons .signup {
+      background: #2563eb;
+      color: #fff;
+    }
+
+    /* Container */
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 60px 20px;
+    }
+
+    .card {
+      background: #fff;
+      padding: 35px 40px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .card h2 {
+      margin: 15px 0 10px;
+      font-size: 22px;
+      color: #111;
+    }
+
+    .card p {
+      margin: 0 0 25px;
+      font-size: 14px;
+      color: #666;
+    }
+
+    .card input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    /* Links */
+    .card .forgot {
+      text-align: right;
+      font-size: 13px;
+      margin-top: -10px;
+      margin-bottom: 15px;
+    }
+    .card .forgot a {
+      text-decoration: none;
+      color: #2563eb;
+      font-weight: 500;
+    }
+
+    /* Botões */
+    .btn {
+      display: inline-block;
+      width: 100%;
+      padding: 12px;
+      background: #2563eb;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 15px;
+      cursor: pointer;
+      font-weight: 500;
+      margin-bottom: 12px;
+    }
+    .btn:hover {
+      background: #1e40af;
+    }
+
+    .btn-google {
+      display: inline-block;
+      width: 100%;
+      padding: 12px;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 15px;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    .card .signup-link {
+      margin-top: 15px;
+      font-size: 14px;
+    }
+    .card .signup-link a {
+      color: #2563eb;
+      font-weight: 500;
+      text-decoration: none;
+    }
+
+    /* Rodapé */
+    footer {
+      margin-top: 50px;
+      padding: 20px;
+      background: #fff;
+      border-top: 1px solid #eee;
+      text-align: center;
+      font-size: 13px;
+      color: #666;
+    }
+    footer a {
+      color: #2563eb;
+      text-decoration: none;
+      margin: 0 5px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="logo">⚕️ Consultec</div>
+    <nav>
+      <a href="#">Profissionais</a>
+      <a href="#">Serviços</a>
+      <a href="#">Sobre nós</a>
+    </nav>
+    <div class="buttons">
+      <a href="login.html" class="login">Entrar</a>
+      <a href="cadastro.html" class="signup">Cadastrar</a>
+    </div>
+  </header>
+
+  <!-- Formulário -->
+  <main class="container">
+    <div class="card">
+      <h2>Acesse sua conta</h2>
+      <p>Bem-vindo de volta! Insira seus dados para continuar.</p>
+      <form>
+        <input type="email" placeholder="Email" required>
+        <input type="password" placeholder="Senha" required>
+        <div class="forgot"><a href="#">Esqueceu sua senha?</a></div>
+
+        <button type="submit" class="btn">Entrar</button>
+        <button type="button" class="btn-google">Entrar com Google</button>
+      </form>
+      <div class="signup-link">
+        Não tem uma conta? <a href="cadastro.html">Cadastre-se</a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Rodapé -->
+  <footer>
+    <p>© 2025 Consultec. Todos os direitos reservados. |
+      <a href="#">Termos de Serviço</a> |
+      <a href="#">Política de Privacidade</a>
+    </p>
+  </footer>
+</body>
+</html>
