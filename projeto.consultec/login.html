@@ -199,5 +199,23 @@
       <a href="#">Política de Privacidade</a>
     </p>
   </footer>
+  <!-- Adicionar este código no arquivo "login.html" -->
+<script>
+  document.querySelector('form').addEventListener('submit', function(event) {
+    event.preventDefault(); // Impede o envio do formulário
+
+    // Pegar os valores dos campos
+    var email = document.querySelector('input[type="email"]').value;
+    var senha = document.querySelector('input[type="password"]').value;
+
+    // Verificar se os campos estão preenchidos
+    if (email && senha) {
+      // Se tudo estiver correto, redireciona para a tela inicial
+      window.location.href = "index.html";
+    } else {
+      alert("Por favor, preencha todos os campos.");
+    }
+  });
+</script>
 </body>
 </html>
