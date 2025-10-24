@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Especialidades - Consultec</title>
+<style>
+  :root {
+    --primary-blue: #2563eb;
+    --text-dark: #333;
+    --text-medium: #555;
+    --bg-light: #f7f9fc;
+  }
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: var(--bg-light);
+    color: var(--text-dark);
+  }
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    background: #fff;
+    border-bottom: 1px solid #eee;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .navbar .logo {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: var(--text-dark);
+    text-decoration: none;
+  }
+  .navbar nav a {
+    margin: 0 15px;
+    text-decoration: none;
+    color: var(--text-dark);
+    font-weight: 600;
+  }
+  .navbar nav a.highlight {
+    background: var(--primary-blue);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 8px;
+  }
+  
+  .hero-specialties {
+    background: white;
+    padding: 60px 40px;
+    max-width: 1200px;
+    margin: 40px auto;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    text-align: center;
+  }
+  
+  .hero-specialties h1 {
+    font-weight: 800;
+    font-size: 2.8rem;
+    margin-bottom: 15px;
+    color: var(--text-dark);
+  }
+  
+  .hero-specialties p {
+    font-size: 1.1rem;
+    color: var(--text-medium);
+    margin-bottom: 40px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .specialties-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+  }
+  
+  .specialty-card {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+  }
+  
+  .specialty-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  }
+  
+  .specialty-icon {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    color: var(--primary-blue);
+  }
+  
+  .specialty-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    color: var(--text-dark);
+  }
+  
+  .specialty-card p {
+    color: var(--text-medium);
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+  
+  .btn {
+    background: var(--primary-blue);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 24px;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 1rem;
+    text-decoration: none;
+    display: inline-block;
+    transition: background 0.3s ease;
+  }
+  
+  .btn:hover {
+    background: #1e40af;
+  }
+  
+  .doctors-section {
+    max-width: 1200px;
+    margin: 60px auto;
+    padding: 0 20px;
+  }
+  
+  .doctors-section h2 {
+    font-size: 2rem;
+    color: var(--text-dark);
+    margin-bottom: 30px;
+    text-align: center;
+  }
+  
+  .doctors-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+  }
+  
+  .doctor-card {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    text-align: center;
+    transition: transform 0.3s ease;
+  }
+  
+  .doctor-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .doctor-card img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    margin-bottom: 15px;
+    object-fit: cover;
+  }
+  
+  .doctor-card h4 {
+    margin: 0 0 8px 0;
+    font-size: 1.2rem;
+  }
+  
+  .doctor-card p {
+    margin: 0 0 15px 0;
+    color: var(--text-medium);
+  }
+  
+  .back-home {
+    text-align: center;
+    margin: 40px 0;
+  }
+  
+  @media (max-width: 768px) {
+    .specialties-grid {
+      grid-template-columns: 1fr;
+      padding: 0 15px;
+    }
+    
+    .hero-specialties {
+      padding: 40px 20px;
+      margin: 20px;
+    }
+    
+    .hero-specialties h1 {
+      font-size: 2rem;
+    }
+  }
+</style>
+</head>
+<body>
+  <header class="navbar">
+    <a href="index.html" class="logo">Consultec</a>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="index.html#profissionais">Profissionais</a>
+      <a href="especialidades.html" class="highlight">Especialidades</a>
+      <a href="#">Contato</a>
+      <a href="cadastro.html" class="btn highlight">Cadastrar</a>
+    </nav>
+  </header>
+
+  <section class="hero-specialties">
+    <h1>Nossas Especialidades</h1>
+    <p>Encontre o especialista ideal para cuidar da sua saúde. Temos profissionais qualificados em diversas áreas médicas.</p>
+  </section>
+  <div class="specialties-grid" id="specialtiesList">
+  </div>
+
+  <section class="doctors-section" id="doctorsBySpecialty">
+    <h2>Profissionais por Especialidade</h2>
+    <div class="doctors-grid" id="doctorsGrid">
+    </div>
+  </section>
+
+  <div class="back-home">
+    <a href="index.html" class="btn">Voltar para Home</a>
+  </div>
+
+<script>
+  const specialties = [
+    {
+      id: 'cardiologia',
+      name: 'Cardiologia',
+      icon: '❤️',
+      description: 'Especializada no diagnóstico e tratamento de doenças do coração e sistema cardiovascular.',
+      doctors: [
+        { name: "Dr. Carlos Monteiro", city: "São Paulo, SP", photo: "https://randomuser.me/api/portraits/men/10.jpg", experience: "15 anos" },
+        { name: "Dra. Ana Costa", city: "Rio de Janeiro, RJ", photo: "https://randomuser.me/api/portraits/women/15.jpg", experience: "12 anos" }
+      ]
+    },
+    {
+      id: 'dermatologia',
+      name: 'Dermatologia',
+      icon: '🔬',
+      description: 'Cuida da saúde da pele, cabelos e unhas, tratando desde acne até câncer de pele.',
+      doctors: [
+        { name: "Dra. Sofia Silva", city: "Rio de Janeiro, RJ", photo: "https://randomuser.me/api/portraits/women/20.jpg", experience: "10 anos" },
+        { name: "Dr. Marcos Oliveira", city: "Belo Horizonte, MG", photo: "https://randomuser.me/api/portraits/men/25.jpg", experience: "8 anos" }
+      ]
+    },
+    {
+      id: 'ortopedia',
+      name: 'Ortopedia',
+      icon: '🦴',
+      description: 'Trata doenças e lesões relacionadas aos ossos, articulações, ligamentos e músculos.',
+      doctors: [
+        { name: "Dr. Roberto Lima", city: "Belo Horizonte, MG", photo: "https://randomuser.me/api/portraits/men/30.jpg", experience: "18 anos" },
+        { name: "Dra. Patricia Santos", city: "São Paulo, SP", photo: "https://randomuser.me/api/portraits/women/35.jpg", experience: "14 anos" }
+      ]
+    },
+    {
+      id: 'pediatria',
+      name: 'Pediatria',
+      icon: '👶',
+      description: 'Cuidados médicos especializados para crianças e adolescentes desde o nascimento.',
+      doctors: [
+        { name: "Dra. Juliana Faria", city: "Porto Alegre, RS", photo: "https://randomuser.me/api/portraits/women/40.jpg", experience: "11 anos" },
+        { name: "Dr. Ricardo Almeida", city: "Curitiba, PR", photo: "https://randomuser.me/api/portraits/men/45.jpg", experience: "9 anos" }
+      ]
+    },
+    {
+      id: 'neurologia',
+      name: 'Neurologia',
+      icon: '🧠',
+      description: 'Especializada no diagnóstico e tratamento de doenças do sistema nervoso.',
+      doctors: [
+        { name: "Dra. Maria Fernandes", city: "São Paulo, SP", photo: "https://randomuser.me/api/portraits/women/50.jpg", experience: "16 anos" }
+      ]
+    },
+    {
+      id: 'oftalmologia',
+      name: 'Oftalmologia',
+      icon: '👁️',
+      description: 'Cuidados com a saúde ocular, desde exames de vista até cirurgias complexas.',
+      doctors: [
+        { name: "Dr. André Pereira", city: "Rio de Janeiro, RJ", photo: "https://randomuser.me/api/portraits/men/55.jpg", experience: "13 anos" }
+      ]
+    }
+  ];
+
+  function renderSpecialties() {
+    const container = document.getElementById('specialtiesList');
+    
+    specialties.forEach(specialty => {
+      const card = document.createElement('div');
+      card.className = 'specialty-card';
+      card.onclick = () => showDoctorsBySpecialty(specialty.id);
+      
+      card.innerHTML = `
+        <div class="specialty-icon">${specialty.icon}</div>
+        <h3>${specialty.name}</h3>
+        <p>${specialty.description}</p>
+        <button class="btn">Ver Profissionais</button>
+      `;
+      
+      container.appendChild(card);
+    });
+  }
+
+  function showDoctorsBySpecialty(specialtyId) {
+    const specialty = specialties.find(s => s.id === specialtyId);
+    const container = document.getElementById('doctorsGrid');
+    
+    document.getElementById('doctorsBySpecialty').scrollIntoView({ 
+      behavior: 'smooth' 
+    });
+    
+    container.innerHTML = '';
+    
+    if (specialty && specialty.doctors.length > 0) {
+      specialty.doctors.forEach(doctor => {
+        const card = document.createElement('div');
+        card.className = 'doctor-card';
+        
+        card.innerHTML = `
+          <img src="${doctor.photo}" alt="${doctor.name}" />
+          <h4>${doctor.name}</h4>
+          <p><strong>${specialty.name}</strong></p>
+          <p>${doctor.city}</p>
+          <p>Experiência: ${doctor.experience}</p>
+          <button class="btn" onclick="scheduleWithDoctor('${doctor.name}', '${specialty.name}')">
+            Agendar Consulta
+          </button>
+        `;
+        
+        container.appendChild(card);
+      });
+    } else {
+      container.innerHTML = '<p>Nenhum profissional encontrado para esta especialidade.</p>';
+    }
+  }
+
+  function scheduleWithDoctor(doctorName, specialty) {
+    localStorage.setItem('selectedDoctor', doctorName);
+    localStorage.setItem('selectedSpecialty', specialty);
+    
+    window.location.href = 'index.html#marcar-consulta';
+  }
+
+  function checkRedirectData() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const specialtyParam = urlParams.get('specialty');
+    
+    if (specialtyParam) {
+      showDoctorsBySpecialty(specialtyParam);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    renderSpecialties();
+    checkRedirectData();
+  });
+</script>
+</body>
+</html>
