@@ -12,7 +12,7 @@
       padding: 0;
     }
 
-    /* Navbar */
+  
     .navbar {
       display: flex;
       justify-content: space-between;
@@ -49,7 +49,7 @@
       color: #fff;
     }
 
-    /* Container */
+  
     .container {
       display: flex;
       justify-content: center;
@@ -88,7 +88,7 @@
       font-size: 14px;
     }
 
-    /* Links */
+    
     .card .forgot {
       text-align: right;
       font-size: 13px;
@@ -141,7 +141,7 @@
       text-decoration: none;
     }
 
-    /* Rodapé */
+    
     footer {
       margin-top: 50px;
       padding: 20px;
@@ -159,7 +159,7 @@
   </style>
 </head>
 <body>
-  <!-- Navbar -->
+ 
   <header class="navbar">
     <div class="logo">⚕️ Consultec</div>
     <nav>
@@ -173,7 +173,7 @@
     </div>
   </header>
 
-  <!-- Formulário -->
+ 
   <main class="container">
     <div class="card">
       <h2>Acesse sua conta</h2>
@@ -192,28 +192,24 @@
     </div>
   </main>
 
-  <!-- Rodapé -->
+  
   <footer>
     <p>© 2025 Consultec. Todos os direitos reservados. |
       <a href="#">Termos de Serviço</a> |
       <a href="#">Política de Privacidade</a>
     </p>
   </footer>
-  <!-- Adicionar este código no arquivo "login.html" -->
-<script>
-  document.querySelector('form').addEventListener('submit', function(event) {
-    event.preventDefault(); // Impede o envio do formulário
+  <script>
+  document.querySelector("form").addEventListener("submit", function(e) {
+    e.preventDefault(); 
 
-    // Pegar os valores dos campos
-    var email = document.querySelector('input[type="email"]').value;
-    var senha = document.querySelector('input[type="password"]').value;
-
-    // Verificar se os campos estão preenchidos
+    const email = document.querySelector('input[type="email"]').value;
+    const senha = document.querySelector('input[type="password"]').value;
     if (email && senha) {
-      // Se tudo estiver correto, redireciona para a tela inicial
+      alert("Login realizado com sucesso!");
       window.location.href = "index.html";
     } else {
-      alert("Por favor, preencha todos os campos.");
+      alert("Preencha todos os campos.");
     }
   });
 </script>
