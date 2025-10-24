@@ -1,91 +1,529 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Consultec - Encontre e Agende sua Consulta</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Consultec - Agendamento Médico</title>
+<style>
+  :root {
+    --primary-blue: #2563eb;
+    --text-dark: #333;
+    --text-medium: #555;
+    --bg-light: #f7f9fc;
+  }
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: var(--bg-light);
+    color: var(--text-dark);
+  }
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    background: #fff;
+    border-bottom: 1px solid #eee;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .navbar .logo {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: var(--text-dark);
+    text-decoration: none;
+  }
+  .navbar nav a {
+    margin: 0 15px;
+    text-decoration: none;
+    color: var(--text-dark);
+    font-weight: 600;
+  }
+  .navbar nav a.highlight {
+    background: var(--primary-blue);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 8px;
+  }
+  .hero {
+    background: white;
+    padding: 60px 40px;
+    max-width: 800px;
+    width: 90%;
+    margin: 100px auto; 
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh; 
+  }
+
+  .hero h1 {
+    font-weight: 800;
+    font-size: 2.8rem;
+    max-width: 600px;
+    margin-bottom: 15px;
+    color: var(--text-dark);
+  }
+  .hero p {
+    max-width: 550px;
+    font-size: 1.1rem;
+    color: var(--text-medium);
+    margin-bottom: 30px;
+  }
+  .search-box {
+    display: flex;
+    gap: 12px;
+    max-width: 650px;
+  }
+  .search-box select,
+  .search-box input {
+    padding: 14px 18px;
+    border: 1.5px solid #ddd;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 1rem;
+    flex-grow: 1;
+  }
+  .search-box button {
+    background: var(--primary-blue);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 1.1rem;
+    padding: 14px 25px;
+    transition: background 0.3s ease;
+  }
+  .search-box button:hover {
+    background: #1e40af;
+  }
+  .profissionais {
+    max-width: 1200px;
+    margin: 60px auto;
+    padding: 0 20px;
+  }
+  .profissionais h2 {
+    font-size: 2rem;
+    color: var(--text-dark);
+    margin-bottom: 24px;
+    font-weight: 700;
+  }
+  .cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    justify-content: center;
+  }
+  .card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    width: 220px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    text-align: center;
+    transition: transform 0.3s ease;
+    cursor: default;
+  }
+  .card:hover {
+    transform: translateY(-7px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+  }
+  .card img {
+    width: 100%;
+    border-radius: 10px;
+    margin-bottom: 12px;
+  }
+  .card h3 {
+    margin: 0 0 6px 0;
+    font-weight: 700;
+    color: var(--text-dark);
+  }
+  .card p {
+    margin: 0 0 15px 0;
+    color: var(--text-medium);
+    font-weight: 600;
+  }
+  .btn {
+    background: var(--primary-blue);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 0;
+    width: 100%;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 1rem;
+    letter-spacing: 0.03em;
+  }
+  .btn:hover {
+    background: #1e40af;
+  }
+  section.form-section {
+    background: white;
+    max-width: 700px;
+    margin: 60px auto;
+    padding: 30px 40px;
+    border-radius: 12px;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+    font-weight: 600;
+    box-sizing: border-box; 
+    overflow: hidden;       
+  }
+  section.form-section h2 {
+    color: var(--text-dark);
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 18px;
+    border-bottom: 3px solid var(--primary-blue);
+    padding-bottom: 8px;
+  }
+  section.form-section label {
+    display: block;
+    margin: 10px 0 6px;
+    color: var(--text-medium);
+  }
+  section.form-section input,
+  section.form-section select {
+    width: 100%;
+    padding: 12px 18px;
+    margin-bottom: 18px;
+    border-radius: 10px;
+    border: 1.5px solid #ddd;
+    font-size: 16px;
+    font-weight: 600;
+  }
+  section.form-section input:focus,
+  section.form-section select:focus {
+    border-color: var(--primary-blue);
+    outline: none;
+  }
+  #scheduleList, #appointmentResult {
+    margin-top: 15px;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--primary-blue);
+  }
+  
+  .specialties-preview {
+    max-width: 1200px;
+    margin: 60px auto;
+    padding: 0 20px;
+    text-align: center;
+  }
+  
+  .specialties-preview h2 {
+    font-size: 2rem;
+    color: var(--text-dark);
+    margin-bottom: 30px;
+    font-weight: 700;
+  }
+  
+  .specialty-buttons {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 30px;
+  }
+  
+  .specialty-btn {
+    background: var(--primary-blue);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 20px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.3s ease;
+  }
+  
+  .specialty-btn:hover {
+    background: #1e40af;
+  }
+  
+  .view-all-btn {
+    background: #10b981;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 30px;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 1rem;
+    text-decoration: none;
+    display: inline-block;
+    transition: background 0.3s ease;
+  }
+  
+  .view-all-btn:hover {
+    background: #0d9668;
+  }
+
+  @media (max-width: 768px) {
+    .cards {
+      justify-content: center;
+    }
+    .card {
+      width: 90%;
+      max-width: 350px;
+    }
+    .hero h1 {
+      font-size: 2rem;
+    }
+    .hero p {
+      font-size: 1rem;
+    }
+    .specialty-buttons {
+      gap: 8px;
+    }
+    .specialty-btn {
+      padding: 10px 16px;
+      font-size: 0.9rem;
+    }
+  }
+</style>
 </head>
 <body>
-  <!-- Navbar -->
   <header class="navbar">
-    <div class="logo"><img src="img/logo.png" alt="Consultec"></div>
+    <a href="index.html" class="logo">Consultec</a>
     <nav>
-      <a href="index.html">Profissionais</a>
-      <a href="#">Serviços</a>
-      <a href="#">Sobre nós</a>
-      <a href="login.html" class="btn">Entrar</a>
+      <a href="#" class="highlight">Home</a>
+      <a href="#profissionais">Profissionais</a>
+      <a href="especialidades.html">Especialidades</a>
+      <a href="#">Contato</a>
       <a href="cadastro.html" class="btn highlight">Cadastrar</a>
     </nav>
   </header>
-
-  <!-- Hero com fundo -->
-  <section class="hero hero-bg">
-    <div class="hero-content">
-      <h1>Encontre e agende sua consulta</h1>
-      <p>Sua saúde em primeiro lugar. Agende consultas com os melhores profissionais de forma rápida e segura.</p>
-      <div class="search-box">
-        <select>
-          <option>Especialidade</option>
-          <option>Cardiologia</option>
-          <option>Dermatologia</option>
-          <option>Ortopedia</option>
-          <option>Pediatria</option>
-        </select>
-        <input type="text" placeholder="Ex: São Paulo, SP">
-        <button class="btn highlight">Buscar</button>
-      </div>
+  
+  <section class="hero">
+    <h1>Encontre e agende sua consulta</h1>
+    <p>Sua saúde em primeiro lugar. Agende consultas com profissionais qualificados de forma rápida e segura.</p>
+    <div class="search-box">
+      <select id="filterSpecialty">
+        <option value="">Especialidade</option>
+        <option>Cardiologia</option>
+        <option>Dermatologia</option>
+        <option>Ortopedia</option>
+        <option>Pediatria</option>
+        <option>Neurologia</option>
+        <option>Oftalmologia</option>
+      </select>
+      <input type="text" id="filterCity" placeholder="Cidade, Estado" />
+      <button class="btn" onclick="filterDoctors()">Buscar</button>
     </div>
- 
-  <!-- Imagem -->
-    <div class="hero-image">
-      <img src="img/medico_fundo.jpg" alt="Médico consulta">
+  </section>
+  
+  <section class="profissionais" id="profissionais">
+    <h2>Profissionais em destaque</h2>
+    <div class="cards" id="doctorsList">
+    </div>
+  </section>
+
+  <section class="specialties-preview" id="especialidades">
+    <h2>Especialidades</h2>
+    <p style="color: var(--text-medium); margin-bottom: 30px; max-width: 600px; margin-left: auto; margin-right: auto;">
+      Explore nossas especialidades médicas e encontre o profissional ideal para sua necessidade.
+    </p>
+    <div class="specialty-buttons">
+      <button class="specialty-btn" onclick="filterBySpecialty('')">Todas</button>
+      <button class="specialty-btn" onclick="filterBySpecialty('Cardiologia')">Cardiologia</button>
+      <button class="specialty-btn" onclick="filterBySpecialty('Dermatologia')">Dermatologia</button>
+      <button class="specialty-btn" onclick="filterBySpecialty('Ortopedia')">Ortopedia</button>
+      <button class="specialty-btn" onclick="filterBySpecialty('Pediatria')">Pediatria</button>
+      <button class="specialty-btn" onclick="filterBySpecialty('Neurologia')">Neurologia</button>
+      <button class="specialty-btn" onclick="filterBySpecialty('Oftalmologia')">Oftalmologia</button>
+    </div>
+    <a href="especialidades.html" class="view-all-btn">Ver Todas as Especialidades</a>
+  </section>
+
+  <section class="form-section" id="cadastro-horario">
+    <h2>Cadastro de Horários</h2>
+    <form id="scheduleForm">
+      <label for="date">Data:</label>
+      <input type="date" id="date" required />
+      <label for="startTime">Horário Início:</label>
+      <input type="time" id="startTime" required />
+      <label for="endTime">Horário Fim:</label>
+      <input type="time" id="endTime" required />
+      <button type="submit" class="btn">Cadastrar Horário</button>
+    </form>
+    <div id="scheduleList"></div>
+  </section>
+
+  <div id="modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:9999;">
+    <div style="background:#fff; max-width:400px; margin:100px auto; padding:20px; border-radius:12px; position:relative;">
+      <button onclick="closeModal()" style="position:absolute; top:10px; right:10px; border:none; background:none; font-size:20px; cursor:pointer;">×</button>
+      <div id="modalContent"></div>
     </div>
   </div>
-</section>
 
-  <!-- Profissionais -->
-  <section class="profissionais">
-    <h2>Profissionais em destaque</h2>
-    <div class="cards">
-      <div class="card">
-        <img src="img/medico1.jpg" alt="Dr. Carlos Monteiro">
-        <h3>Dr. Carlos Monteiro</h3>
-        <p>Cardiologia • São Paulo, SP</p>
-        <button class="btn highlight">Ver Horários</button>
-      </div>
-      <div class="card">
-        <img src="img/medico2.jpg" alt="Dra. Arnaldo Silva">
-        <h3>Dra. Arna Silva</h3>
-        <p>Dermatologia • Rio de Janeiro, RJ</p>
-        <button class="btn highlight">Ver Horários</button>
-      </div>
-      <div class="card">
-        <img src="img/medico3.jpg" alt="Dr. Roberto Lima">
-        <h3>Dr. Roberto Lima</h3>
-        <p>Ortopedia • Belo Horizonte, MG</p>
-        <button class="btn highlight">Ver Horários</button>
-      </div>
-      <div class="card">
-        <img src="img/medico4.jpg" alt="Dra. Juliano Faria">
-        <h3>Dra. Juliano Faria</h3>
-        <p>Pediatria • Porto Alegre, RS</p>
-        <button class="btn highlight">Ver Horários</button>
-      </div>
-    </div>
+  <section class="form-section" id="marcar-consulta">
+    <h2>Marcar Consulta</h2>
+    <form id="appointmentForm">
+      <label for="doctor">Profissional:</label>
+      <select id="doctor" required>
+        <option value="">Selecione</option>
+      </select>
+      <label for="appointmentDate">Data:</label>
+      <input type="date" id="appointmentDate" required />
+      <label for="appointmentTime">Horário:</label>
+      <select id="appointmentTime" required>
+        <option value="">Selecione um horário</option>
+      </select>
+      <button type="submit" class="btn">Marcar Consulta</button>
+    </form>
+    <div id="appointmentResult"></div>
   </section>
 
-  <section class="cta">
-    <h2>Pronto para começar?</h2>
-    <p>Crie sua conta hoje e tenha acesso a uma rede de profissionais qualificados.</p>
-    <a href="cadastro.html" class="btn highlight">Cadastre-se Gratuitamente</a>
-  </section>
+<script>
+  const doctors = [
+    {name: "Dr. Carlos Monteiro", specialty: "Cardiologia", city: "São Paulo, SP", photo:"https://randomuser.me/api/portraits/men/10.jpg"},
+    {name: "Dra. Sofia Silva", specialty: "Dermatologia", city: "Rio de Janeiro, RJ", photo:"https://randomuser.me/api/portraits/women/20.jpg"},
+    {name: "Dr. Roberto Lima", specialty: "Ortopedia", city: "Belo Horizonte, MG", photo:"https://randomuser.me/api/portraits/men/30.jpg"},
+    {name: "Dra. Juliana Faria", specialty: "Pediatria", city: "Porto Alegre, RS", photo:"https://randomuser.me/api/portraits/women/40.jpg"},
+    {name: "Dra. Ana Costa", specialty: "Cardiologia", city: "Rio de Janeiro, RJ", photo:"https://randomuser.me/api/portraits/women/15.jpg"},
+    {name: "Dr. Marcos Oliveira", specialty: "Dermatologia", city: "Belo Horizonte, MG", photo:"https://randomuser.me/api/portraits/men/25.jpg"}
+  ];
 
-  <!-- Footer -->
-  <footer>
-    <p>© 2025 Consultec. Todos os direitos reservados.</p>
-    <a href="#">Termos de Serviço</a> | <a href="#">Política de Privacidade</a>
-  </footer>
-  <script src="script.js"></script>
+  let schedules = [];
+
+  function checkRedirectData() {
+    const selectedDoctor = localStorage.getItem('selectedDoctor');
+    const selectedSpecialty = localStorage.getItem('selectedSpecialty');
+    
+    if (selectedDoctor && selectedSpecialty) {
+      document.getElementById('doctor').value = selectedDoctor;
+      
+      document.getElementById('marcar-consulta').scrollIntoView({ 
+        behavior: 'smooth' 
+      });
+      
+      localStorage.removeItem('selectedDoctor');
+      localStorage.removeItem('selectedSpecialty');
+    }
+  }
+
+  function filterDoctors() {
+    const specialty = document.getElementById("filterSpecialty").value.toLowerCase();
+    const city = document.getElementById("filterCity").value.toLowerCase();
+    const list = doctors.filter(doc =>
+      (!specialty || doc.specialty.toLowerCase() === specialty) &&
+      (!city || doc.city.toLowerCase().includes(city))
+    );
+    renderDoctors(list);
+  }
+
+  function filterBySpecialty(specialty) {
+    const list = specialty ? doctors.filter(doc => doc.specialty === specialty) : doctors;
+    renderDoctors(list);
+    
+    document.getElementById('profissionais').scrollIntoView({ 
+      behavior: 'smooth' 
+    });
+  }
+
+  function renderDoctors(list) {
+    const container = document.getElementById("doctorsList");
+    container.innerHTML = "";
+    if(list.length === 0) {
+      container.innerHTML = "<p>Nenhum profissional encontrado.</p>";
+      return;
+    }
+    list.forEach(doc => {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        <img src="${doc.photo}" alt="${doc.name}" />
+        <h3>${doc.name}</h3>
+        <p>${doc.specialty}</p>
+        <p>${doc.city}</p>
+        <button class="btn" onclick="scheduleWithDoctor('${doc.name}')">Agendar Consulta</button>
+      `;
+      container.appendChild(card);
+    });
+  }
+
+  function scheduleWithDoctor(doctorName) {
+    document.getElementById('doctor').value = doctorName;
+    
+    document.getElementById('marcar-consulta').scrollIntoView({ 
+      behavior: 'smooth' 
+    });
+  }
+
+  function renderSchedules() {
+    const container = document.getElementById("scheduleList");
+    if (schedules.length === 0) {
+      container.innerHTML = "<p>Nenhum horário cadastrado.</p>";
+      return;
+    }
+    container.innerHTML = "<h3>Horários Cadastrados:</h3><ul>" +
+      schedules.map(sch => `<li>${sch.date} - ${sch.startTime} às ${sch.endTime}</li>`).join("") +
+      "</ul>";
+  }
+
+  document.getElementById("scheduleForm").addEventListener("submit", e => {
+    e.preventDefault();
+    const date = document.getElementById("date").value;
+    const startTime = document.getElementById("startTime").value;
+    const endTime = document.getElementById("endTime").value;
+    if(startTime >= endTime){
+      alert("O horário inicial deve ser anterior ao horário final.");
+      return;
+    }
+    schedules.push({date, startTime, endTime});
+    renderSchedules();
+    e.target.reset();
+  });
+
+  document.getElementById("appointmentDate").addEventListener("change", () => {
+    const selectedDate = document.getElementById("appointmentDate").value;
+    const timeSelect = document.getElementById("appointmentTime");
+    timeSelect.innerHTML = "<option value=''>Selecione um horário</option>";
+    const availableSchedules = schedules.filter(sch => sch.date === selectedDate);
+    if(availableSchedules.length === 0) {
+      timeSelect.innerHTML += "<option disabled>Sem horários disponíveis</option>";
+      return;
+    }
+    availableSchedules.forEach(sch => {
+      const option = document.createElement("option");
+      option.value = sch.startTime;
+      option.textContent = `${sch.startTime} às ${sch.endTime}`;
+      timeSelect.appendChild(option);
+    });
+  });
+
+  document.getElementById("doctor").innerHTML = 
+    '<option value="">Selecione</option>' +
+    doctors.map(doc => `<option value="${doc.name}">${doc.name} - ${doc.specialty}</option>`).join("");
+
+  document.getElementById("appointmentForm").addEventListener("submit", e => {
+    e.preventDefault();
+    const doctor = document.getElementById("doctor").value;
+    const date = document.getElementById("appointmentDate").value;
+    const time = document.getElementById("appointmentTime").value;
+    if(!doctor || !date || !time){
+      alert("Por favor, preencha todos os campos para marcar a consulta.");
+      return;
+    }
+    document.getElementById("appointmentResult").innerHTML = 
+      `<p>Consulta marcada com <strong>${doctor}</strong> no dia <strong>${date}</strong> às <strong>${time}</strong>.</p>`;
+    e.target.reset();
+    document.getElementById("appointmentTime").innerHTML = "<option value=''>Selecione um horário</option>";
+  });
+
+  document.addEventListener('DOMContentLoaded', function() {
+    renderDoctors(doctors);
+    renderSchedules();
+    checkRedirectData();
+  });
+</script>
 </body>
 </html>
