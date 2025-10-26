@@ -14,15 +14,16 @@
   body {
     margin: 0;
     font-family: 'Segoe UI', sans-serif;
-    background: var(--bg-light);
+    background: #ffffff;
     color: var(--text-dark);
   }
+  
   .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 15px 40px;
-    background: #fff;
+    background: #029680;
     border-bottom: 1px solid #eee;
     position: sticky;
     top: 0;
@@ -47,11 +48,11 @@
     border-radius: 8px;
   }
   .hero {
-    background: white;
-    padding: 60px 40px;
+    background: #029680;
+    padding: 15px 750px;
     max-width: 800px;
     width: 90%;
-    margin: 100px auto; 
+    margin: 0px auto; 
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     text-align: center;
@@ -59,19 +60,19 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 60vh; 
+    min-height: 75vh; 
   }
 
   .hero h1 {
     font-weight: 800;
-    font-size: 2.8rem;
+    font-size: 3.4rem;
     max-width: 600px;
     margin-bottom: 15px;
     color: var(--text-dark);
   }
   .hero p {
     max-width: 550px;
-    font-size: 1.1rem;
+    font-size: 1.4rem;
     color: var(--text-medium);
     margin-bottom: 30px;
   }
@@ -101,7 +102,7 @@
     transition: background 0.3s ease;
   }
   .search-box button:hover {
-    background: #1e40af;
+    background: #1339b7;
   }
   .profissionais {
     max-width: 1200px;
@@ -288,11 +289,102 @@
       font-size: 0.9rem;
     }
   }
+
+  /* Só a área da hero */
+.hero h1,
+.hero p {
+  color: #fff !important;  /* força branco apenas aqui */
+}
+
+/* (Opcional) deixar a navbar branca também, sem afetar o restante */
+.navbar .logo,
+.navbar nav a {
+  color: #fff !important;
+}
+
+/* ========================
+   CONTROLES DE AJUSTE
+   ======================== */
+:root {
+  --hero-img-zoom: 1.4;   /* 🔍 Zoom da imagem (1 = normal, 1.2 = 20% maior, 0.9 = menor) */
+  --hero-img-offset-y: 40px; /* ⬆️⬇️ Move a imagem verticalmente (positivo = para baixo, negativo = para cima) */
+}
+
+/* ========================
+   ESTILOS PRINCIPAIS
+   ======================== */
+.hero {
+  background: #029680;
+  padding: 80px 750;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 75vh;
+}
+
+.hero-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1300px;
+  width: 100%;
+  gap: 100px;
+  padding: 0 100px;
+}
+
+.hero-text {
+  flex: 1;
+  color: #fff;
+  text-align: left;
+}
+
+.hero-image {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+/* === Imagem principal === */
+.hero-image img {
+  width: 400px;
+  height: auto;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  object-fit: contain;
+
+  /* 💡 Controle de zoom e posição */
+  transform: scale(var(--hero-img-zoom)) translateY(var(--hero-img-offset-y));
+  transition: transform 0.3s ease;
+}
+
+/* Responsivo */
+@media (max-width: 900px) {
+  .hero-content {
+    flex-direction: column;
+    text-align: center;
+    gap: 30px;
+    padding: 0 40px;
+  }
+
+  .hero-image {
+    justify-content: center;
+  }
+
+  .hero-image img {
+    width: 70%;
+    max-width: 320px;
+    transform: scale(1) translateY(0);
+  }
+}
+
+
 </style>
 </head>
 <body>
   <header class="navbar">
-    <a href="index.html" class="logo">Consultec</a>
+    <a href="index.html" class="logo">⚕️Consultec</a>
     <nav>
       <a href="#" class="highlight">Home</a>
       <a href="#profissionais">Profissionais</a>
@@ -303,22 +395,32 @@
   </header>
   
   <section class="hero">
-    <h1>Encontre e agende sua consulta</h1>
-    <p>Sua saúde em primeiro lugar. Agende consultas com profissionais qualificados de forma rápida e segura.</p>
-    <div class="search-box">
-      <select id="filterSpecialty">
-        <option value="">Especialidade</option>
-        <option>Cardiologia</option>
-        <option>Dermatologia</option>
-        <option>Ortopedia</option>
-        <option>Pediatria</option>
-        <option>Neurologia</option>
-        <option>Oftalmologia</option>
-      </select>
-      <input type="text" id="filterCity" placeholder="Cidade, Estado" />
-      <button class="btn" onclick="filterDoctors()">Buscar</button>
+  <div class="hero-content">
+    <div class="hero-text">
+      <h1>Encontre e agende sua consulta</h1>
+      <p>Sua saúde em primeiro lugar. Agende consultas com profissionais qualificados de forma rápida e segura.</p>
+      <div class="search-box">
+        <select id="filterSpecialty">
+          <option value="">Especialidade</option>
+          <option>Cardiologia</option>
+          <option>Dermatologia</option>
+          <option>Ortopedia</option>
+          <option>Pediatria</option>
+          <option>Neurologia</option>
+          <option>Oftalmologia</option>
+        </select>
+        <input type="text" id="filterCity" placeholder="Cidade, Estado" />
+        <button class="btn" onclick="filterDoctors()">Buscar</button>
+      </div>
     </div>
-  </section>
+    
+    <!-- Imagem adicionada -->
+    <div class="hero-image">
+      <img src="img/medico_fundosefundo.png" alt="Consulta médica" />
+    </div>
+  </div>
+</section>
+
   
   <section class="profissionais" id="profissionais">
     <h2>Profissionais em destaque</h2>
