@@ -1,373 +1,299 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Especialidades - Consultec</title>
-<style>
-  :root {
-    --primary-blue: #2563eb;
-    --text-dark: #333;
-    --text-medium: #555;
-    --bg-light: #f7f9fc;
-  }
-  body {
-    margin: 0;
-    font-family: 'Segoe UI', sans-serif;
-    background: var(--bg-light);
-    color: var(--text-dark);
-  }
-  .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 40px;
-    background: #fff;
-    border-bottom: 1px solid #eee;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-  .navbar .logo {
-    font-size: 1.5em;
-    font-weight: bold;
-    color: var(--text-dark);
-    text-decoration: none;
-  }
-  .navbar nav a {
-    margin: 0 15px;
-    text-decoration: none;
-    color: var(--text-dark);
-    font-weight: 600;
-  }
-  .navbar nav a.highlight {
-    background: var(--primary-blue);
-    color: white;
-    padding: 8px 16px;
-    border-radius: 8px;
-  }
-  
-  .hero-specialties {
-    background: white;
-    padding: 60px 40px;
-    max-width: 1200px;
-    margin: 40px auto;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    text-align: center;
-  }
-  
-  .hero-specialties h1 {
-    font-weight: 800;
-    font-size: 2.8rem;
-    margin-bottom: 15px;
-    color: var(--text-dark);
-  }
-  
-  .hero-specialties p {
-    font-size: 1.1rem;
-    color: var(--text-medium);
-    margin-bottom: 40px;
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  
-  .specialties-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px;
-    max-width: 1200px;
-    margin: 40px auto;
-    padding: 0 20px;
-  }
-  
-  .specialty-card {
-    background: white;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    text-align: center;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    cursor: pointer;
-  }
-  
-  .specialty-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-  }
-  
-  .specialty-icon {
-    font-size: 3rem;
-    margin-bottom: 20px;
-    color: var(--primary-blue);
-  }
-  
-  .specialty-card h3 {
-    font-size: 1.5rem;
-    margin-bottom: 15px;
-    color: var(--text-dark);
-  }
-  
-  .specialty-card p {
-    color: var(--text-medium);
-    line-height: 1.6;
-    margin-bottom: 20px;
-  }
-  
-  .btn {
-    background: var(--primary-blue);
-    color: white;
-    border: none;
-    border-radius: 10px;
-    padding: 12px 24px;
-    font-weight: 700;
-    cursor: pointer;
-    font-size: 1rem;
-    text-decoration: none;
-    display: inline-block;
-    transition: background 0.3s ease;
-  }
-  
-  .btn:hover {
-    background: #1e40af;
-  }
-  
-  .doctors-section {
-    max-width: 1200px;
-    margin: 60px auto;
-    padding: 0 20px;
-  }
-  
-  .doctors-section h2 {
-    font-size: 2rem;
-    color: var(--text-dark);
-    margin-bottom: 30px;
-    text-align: center;
-  }
-  
-  .doctors-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 25px;
-  }
-  
-  .doctor-card {
-    background: white;
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    text-align: center;
-    transition: transform 0.3s ease;
-  }
-  
-  .doctor-card:hover {
-    transform: translateY(-5px);
-  }
-  
-  .doctor-card img {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    margin-bottom: 15px;
-    object-fit: cover;
-  }
-  
-  .doctor-card h4 {
-    margin: 0 0 8px 0;
-    font-size: 1.2rem;
-  }
-  
-  .doctor-card p {
-    margin: 0 0 15px 0;
-    color: var(--text-medium);
-  }
-  
-  .back-home {
-    text-align: center;
-    margin: 40px 0;
-  }
-  
-  @media (max-width: 768px) {
-    .specialties-grid {
-      grid-template-columns: 1fr;
-      padding: 0 15px;
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Especialidades - Consultec</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <style>
+    :root {
+      --primary-blue: #2563eb;
+      --text-dark: #333;
+      --text-medium: #555;
+      --bg-light: #f7f9fc;
     }
     
-    .hero-specialties {
-      padding: 40px 20px;
-      margin: 20px;
+    .specialty-card {
+      transition: all 0.3s ease;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
     }
     
-    .hero-specialties h1 {
-      font-size: 2rem;
+    .specialty-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15) !important;
     }
-  }
-</style>
+    
+    .specialty-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      color: var(--primary-blue);
+    }
+    
+    .doctor-card {
+      transition: transform 0.3s ease;
+      border: none;
+      border-radius: 12px;
+    }
+    
+    .doctor-card:hover {
+      transform: translateY(-3px);
+    }
+    
+    .btn-primary {
+      background-color: var(--primary-blue);
+      border-color: var(--primary-blue);
+    }
+    
+    .btn-primary:hover {
+      background-color: #1e40af;
+      border-color: #1e40af;
+    }
+  </style>
 </head>
 <body>
-  <header class="navbar">
-    <a href="index.html" class="logo">Consultec</a>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="index.html#profissionais">Profissionais</a>
-      <a href="especialidades.html" class="highlight">Especialidades</a>
-      <a href="#">Contato</a>
-      <a href="cadastro.html" class="btn highlight">Cadastrar</a>
-    </nav>
-  </header>
-
-  <section class="hero-specialties">
-    <h1>Nossas Especialidades</h1>
-    <p>Encontre o especialista ideal para cuidar da sua saúde. Temos profissionais qualificados em diversas áreas médicas.</p>
-  </section>
-  <div class="specialties-grid" id="specialtiesList">
+  <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top shadow-sm">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="index.html">Consultec</a>
+    
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav mx-auto">
+        <li class="nav-item">
+          <a class="nav-link active fw-semibold" href="#">Início</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link fw-semibold" href="#profissionais">Profissionais</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link fw-semibold" href="especialidades.html">Especialidades</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link fw-semibold" href="#">Contato</a>
+        </li>
+      </ul>
+      
+      <div class="d-flex">
+        <a href="cadastro.html" class="btn btn-primary">Cadastrar</a>
+      </div>
+    </div>
   </div>
+</nav>
 
-  <section class="doctors-section" id="doctorsBySpecialty">
-    <h2>Profissionais por Especialidade</h2>
-    <div class="doctors-grid" id="doctorsGrid">
+  <section class="py-5 bg-light">
+    <div class="container">
+      <div class="row justify-content-center text-center">
+        <div class="col-lg-8">
+          <h1 class="display-5 fw-bold mb-4">Nossas Especialidades</h1>
+          <p class="lead text-muted mb-0">
+            Encontre o especialista ideal para cuidar da sua saúde. Temos profissionais qualificados em diversas áreas médicas.
+          </p>
+        </div>
+      </div>
     </div>
   </section>
 
-  <div class="back-home">
-    <a href="index.html" class="btn">Voltar para Home</a>
-  </div>
+  <section class="py-5">
+    <div class="container">
+      <div class="row g-4" id="specialtiesList">
+      </div>
+    </div>
+  </section>
 
-<script>
-  const specialties = [
-    {
-      id: 'cardiologia',
-      name: 'Cardiologia',
-      icon: '❤️',
-      description: 'Especializada no diagnóstico e tratamento de doenças do coração e sistema cardiovascular.',
-      doctors: [
-        { name: "Dr. Carlos Monteiro", city: "São Paulo, SP", photo: "https://randomuser.me/api/portraits/men/10.jpg", experience: "15 anos" },
-        { name: "Dra. Ana Costa", city: "Rio de Janeiro, RJ", photo: "https://randomuser.me/api/portraits/women/15.jpg", experience: "12 anos" }
-      ]
-    },
-    {
-      id: 'dermatologia',
-      name: 'Dermatologia',
-      icon: '🔬',
-      description: 'Cuida da saúde da pele, cabelos e unhas, tratando desde acne até câncer de pele.',
-      doctors: [
-        { name: "Dra. Sofia Silva", city: "Rio de Janeiro, RJ", photo: "https://randomuser.me/api/portraits/women/20.jpg", experience: "10 anos" },
-        { name: "Dr. Marcos Oliveira", city: "Belo Horizonte, MG", photo: "https://randomuser.me/api/portraits/men/25.jpg", experience: "8 anos" }
-      ]
-    },
-    {
-      id: 'ortopedia',
-      name: 'Ortopedia',
-      icon: '🦴',
-      description: 'Trata doenças e lesões relacionadas aos ossos, articulações, ligamentos e músculos.',
-      doctors: [
-        { name: "Dr. Roberto Lima", city: "Belo Horizonte, MG", photo: "https://randomuser.me/api/portraits/men/30.jpg", experience: "18 anos" },
-        { name: "Dra. Patricia Santos", city: "São Paulo, SP", photo: "https://randomuser.me/api/portraits/women/35.jpg", experience: "14 anos" }
-      ]
-    },
-    {
-      id: 'pediatria',
-      name: 'Pediatria',
-      icon: '👶',
-      description: 'Cuidados médicos especializados para crianças e adolescentes desde o nascimento.',
-      doctors: [
-        { name: "Dra. Juliana Faria", city: "Porto Alegre, RS", photo: "https://randomuser.me/api/portraits/women/40.jpg", experience: "11 anos" },
-        { name: "Dr. Ricardo Almeida", city: "Curitiba, PR", photo: "https://randomuser.me/api/portraits/men/45.jpg", experience: "9 anos" }
-      ]
-    },
-    {
-      id: 'neurologia',
-      name: 'Neurologia',
-      icon: '🧠',
-      description: 'Especializada no diagnóstico e tratamento de doenças do sistema nervoso.',
-      doctors: [
-        { name: "Dra. Maria Fernandes", city: "São Paulo, SP", photo: "https://randomuser.me/api/portraits/women/50.jpg", experience: "16 anos" }
-      ]
-    },
-    {
-      id: 'oftalmologia',
-      name: 'Oftalmologia',
-      icon: '👁️',
-      description: 'Cuidados com a saúde ocular, desde exames de vista até cirurgias complexas.',
-      doctors: [
-        { name: "Dr. André Pereira", city: "Rio de Janeiro, RJ", photo: "https://randomuser.me/api/portraits/men/55.jpg", experience: "13 anos" }
-      ]
-    }
-  ];
+  <section class="py-5 bg-light" id="doctorsBySpecialty">
+    <div class="container">
+      <h2 class="text-center mb-5 fw-bold">Profissionais por Especialidade</h2>
+      <div class="row g-4" id="doctorsGrid">
+      </div>
+    </div>
+  </section>
 
-  function renderSpecialties() {
-    const container = document.getElementById('specialtiesList');
-    
-    specialties.forEach(specialty => {
-      const card = document.createElement('div');
-      card.className = 'specialty-card';
-      card.onclick = () => showDoctorsBySpecialty(specialty.id);
-      
-      card.innerHTML = `
-        <div class="specialty-icon">${specialty.icon}</div>
-        <h3>${specialty.name}</h3>
-        <p>${specialty.description}</p>
-        <button class="btn">Ver Profissionais</button>
-      `;
-      
-      container.appendChild(card);
-    });
-  }
+  <section class="py-5">
+    <div class="container text-center">
+      <a href="index.html" class="btn btn-primary btn-lg">
+        <i class="bi bi-arrow-left me-2"></i>Voltar para Home
+      </a>
+    </div>
+  </section>
 
-  function showDoctorsBySpecialty(specialtyId) {
-    const specialty = specialties.find(s => s.id === specialtyId);
-    const container = document.getElementById('doctorsGrid');
-    
-    document.getElementById('doctorsBySpecialty').scrollIntoView({ 
-      behavior: 'smooth' 
-    });
-    
-    container.innerHTML = '';
-    
-    if (specialty && specialty.doctors.length > 0) {
-      specialty.doctors.forEach(doctor => {
-        const card = document.createElement('div');
-        card.className = 'doctor-card';
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <script>
+    class SpecialtiesApp {
+      constructor() {
+        this.specialties = [
+          {
+            id: 'cardiologia',
+            name: 'Cardiologia',
+            icon: '❤️',
+            description: 'Especializada no diagnóstico e tratamento de doenças do coração e sistema cardiovascular.',
+            doctors: [
+              { name: "Dr. Carlos Monteiro", city: "São Paulo, SP", photo: "https://images.pexels.com/photos/5327914/pexels-photo-5327914.jpeg", experience: "15 anos", rating: 4.9 },
+              { name: "Dra. Ana Costa", city: "Rio de Janeiro, RJ", photo: "https://randomuser.me/api/portraits/women/15.jpg", experience: "12 anos", rating: 4.8 }
+            ]
+          },
+          {
+            id: 'dermatologia',
+            name: 'Dermatologia',
+            icon: '🔬',
+            description: 'Cuida da saúde da pele, cabelos e unhas, tratando desde acne até câncer de pele.',
+            doctors: [
+              { name: "Dra. Sofia Silva", city: "Rio de Janeiro, RJ", photo: "https://images.pexels.com/photos/5069589/pexels-photo-5069589.jpeg", experience: "10 anos", rating: 4.8 },
+              { name: "Dr. Marcos Oliveira", city: "Belo Horizonte, MG", photo: "https://s3.ap-southeast-2.amazonaws.com/cdn.basscoastskindoctors.com.au/wp-content/uploads/2021/12/16111303/Skin-specialist-vs-skin-doctor-whats-the-difference-HERO.jpg", experience: "8 anos", rating: 4.7 }
+            ]
+          },
+          {
+            id: 'ortopedia',
+            name: 'Ortopedia',
+            icon: '🦴',
+            description: 'Trata doenças e lesões relacionadas aos ossos, articulações, ligamentos e músculos.',
+            doctors: [
+              { name: "Dr. Roberto Lima", city: "Belo Horizonte, MG", photo: "https://surgpli.com/wp-content/uploads/2023/03/AdobeStock_541200278.jpg", experience: "18 anos", rating: 4.9 },
+              { name: "Dra. Patricia Santos", city: "São Paulo, SP", photo: "https://randomuser.me/api/portraits/women/35.jpg", experience: "14 anos", rating: 4.8 }
+            ]
+          },
+          {
+            id: 'pediatria',
+            name: 'Pediatria',
+            icon: '👶',
+            description: 'Cuidados médicos especializados para crianças e adolescentes desde o nascimento.',
+            doctors: [
+              { name: "Dra. Juliana Faria", city: "Porto Alegre, RS", photo: "https://freerangestock.com/sample/146000/young-pediatrician-doctor-and-child-patient.jpg", experience: "11 anos", rating: 4.7 },
+              { name: "Dr. Ricardo Almeida", city: "Curitiba, PR", photo: "https://randomuser.me/api/portraits/men/45.jpg", experience: "9 anos", rating: 4.6 }
+            ]
+          },
+          {
+            id: 'neurologia',
+            name: 'Neurologia',
+            icon: '🧠',
+            description: 'Especializada no diagnóstico e tratamento de doenças do sistema nervoso.',
+            doctors: [
+              { name: "Dra. Maria Fernandes", city: "São Paulo, SP", photo: "https://randomuser.me/api/portraits/women/50.jpg", experience: "16 anos", rating: 4.9 }
+            ]
+          },
+          {
+            id: 'oftalmologia',
+            name: 'Oftalmologia',
+            icon: '👁️',
+            description: 'Cuidados com a saúde ocular, desde exames de vista até cirurgias complexas.',
+            doctors: [
+              { name: "Dr. André Pereira", city: "Rio de Janeiro, RJ", photo: "https://randomuser.me/api/portraits/men/55.jpg", experience: "13 anos", rating: 4.8 }
+            ]
+          }
+        ];
         
-        card.innerHTML = `
-          <img src="${doctor.photo}" alt="${doctor.name}" />
-          <h4>${doctor.name}</h4>
-          <p><strong>${specialty.name}</strong></p>
-          <p>${doctor.city}</p>
-          <p>Experiência: ${doctor.experience}</p>
-          <button class="btn" onclick="scheduleWithDoctor('${doctor.name}', '${specialty.name}')">
-            Agendar Consulta
-          </button>
-        `;
+        this.init();
+      }
+
+      init() {
+        this.renderSpecialties();
+        this.checkRedirectData();
+      }
+
+      renderSpecialties() {
+        const container = document.getElementById('specialtiesList');
+        if (!container) return;
+
+        this.specialties.forEach((specialty, index) => {
+          const col = document.createElement('div');
+          col.className = 'col-md-6 col-lg-4';
+          col.innerHTML = `
+            <div class="card specialty-card h-100 shadow-sm fade-in" 
+                 onclick="specialtiesApp.showDoctorsBySpecialty('${specialty.id}')"
+                 style="animation-delay: ${index * 0.1}s;">
+              <div class="card-body text-center p-4">
+                <div class="specialty-icon">${specialty.icon}</div>
+                <h4 class="card-title fw-bold mb-3">${specialty.name}</h4>
+                <p class="card-text text-muted mb-4">${specialty.description}</p>
+                <button class="btn btn-primary">
+                  <i class="bi bi-people me-2"></i>Ver Profissionais
+                </button>
+              </div>
+            </div>
+          `;
+          container.appendChild(col);
+        });
+      }
+
+      showDoctorsBySpecialty(specialtyId) {
+        const specialty = this.specialties.find(s => s.id === specialtyId);
+        const container = document.getElementById('doctorsGrid');
         
-        container.appendChild(card);
-      });
-    } else {
-      container.innerHTML = '<p>Nenhum profissional encontrado para esta especialidade.</p>';
+        if (!container || !specialty) return;
+        document.getElementById('doctorsBySpecialty').scrollIntoView({ 
+          behavior: 'smooth' 
+        });
+
+        container.innerHTML = '';
+
+        if (specialty.doctors.length > 0) {
+          specialty.doctors.forEach((doctor, index) => {
+            const col = document.createElement('div');
+            col.className = 'col-md-6 col-lg-4';
+            col.innerHTML = `
+              <div class="card doctor-card h-100 shadow-sm fade-in" 
+                   style="animation-delay: ${index * 0.1}s;">
+                <div class="card-body text-center p-4">
+                  <img src="${doctor.photo}" 
+                       class="rounded-circle mb-3" 
+                       alt="${doctor.name}"
+                       style="width: 120px; height: 120px; object-fit: cover;">
+                  <h5 class="card-title fw-bold">${doctor.name}</h5>
+                  <p class="card-text text-primary fw-semibold">${specialty.name}</p>
+                  <p class="card-text text-muted small">
+                    <i class="bi bi-geo-alt me-1"></i>${doctor.city}
+                  </p>
+                  <div class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="badge bg-warning text-dark">
+                      <i class="bi bi-star-fill me-1"></i>${doctor.rating}
+                    </span>
+                    <span class="text-muted small">${doctor.experience}</span>
+                  </div>
+                  <button class="btn btn-primary w-100" 
+                          onclick="specialtiesApp.scheduleWithDoctor('${doctor.name}', '${specialty.name}')">
+                    <i class="bi bi-calendar-plus me-2"></i>Agendar Consulta
+                  </button>
+                </div>
+              </div>
+            `;
+            container.appendChild(col);
+          });
+        } else {
+          container.innerHTML = `
+            <div class="col-12 text-center">
+              <div class="alert alert-info">
+                <i class="bi bi-info-circle me-2"></i>
+                Nenhum profissional encontrado para esta especialidade.
+              </div>
+            </div>
+          `;
+        }
+      }
+
+      scheduleWithDoctor(doctorName, specialty) {
+        localStorage.setItem('selectedDoctor', doctorName);
+        localStorage.setItem('selectedSpecialty', specialty);
+        window.location.href = 'index.html#marcar-consulta';
+      }
+
+      checkRedirectData() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const specialtyParam = urlParams.get('specialty');
+        
+        if (specialtyParam) {
+          this.showDoctorsBySpecialty(specialtyParam);
+        }
+      }
     }
-  }
 
-  function scheduleWithDoctor(doctorName, specialty) {
-    localStorage.setItem('selectedDoctor', doctorName);
-    localStorage.setItem('selectedSpecialty', specialty);
-    
-    window.location.href = 'index.html#marcar-consulta';
-  }
-
-  function checkRedirectData() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const specialtyParam = urlParams.get('specialty');
-    
-    if (specialtyParam) {
-      showDoctorsBySpecialty(specialtyParam);
-    }
-  }
-
-  document.addEventListener('DOMContentLoaded', function() {
-    renderSpecialties();
-    checkRedirectData();
-  });
-</script>
+    document.addEventListener('DOMContentLoaded', () => {
+      window.specialtiesApp = new SpecialtiesApp();
+    });
+  </script>
 </body>
 </html>
