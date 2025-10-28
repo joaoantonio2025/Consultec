@@ -1,536 +1,695 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Consultec - Agendamento Médico</title>
-<style>
-  :root {
-    --primary-blue: #2563eb;
-    --text-dark: #333;
-    --text-medium: #555;
-    --bg-light: #f7f9fc;
-  }
-  body {
-    margin: 0;
-    font-family: 'Segoe UI', sans-serif;
-    background: var(--bg-light);
-    color: var(--text-dark);
-  }
-  .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 40px;
-    background: #fff;
-    border-bottom: 1px solid #eee;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-  .navbar .logo {
-    font-size: 1.5em;
-    font-weight: bold;
-    color: var(--text-dark);
-    text-decoration: none;
-  }
-  .navbar nav a {
-    margin: 0 15px;
-    text-decoration: none;
-    color: var(--text-dark);
-    font-weight: 600;
-  }
-  .navbar nav a.highlight {
-    background: var(--primary-blue);
-    color: white;
-    padding: 8px 16px;
-    border-radius: 8px;
-  }
-  .hero {
-    background: white;
-    padding: 60px 40px;
-    max-width: 800px;
-    width: 90%;
-    margin: 100px auto; 
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 60vh; 
-  }
-
-  .hero h1 {
-    font-weight: 800;
-    font-size: 2.8rem;
-    max-width: 600px;
-    margin-bottom: 15px;
-    color: var(--text-dark);
-  }
-  .hero p {
-    max-width: 550px;
-    font-size: 1.1rem;
-    color: var(--text-medium);
-    margin-bottom: 30px;
-  }
-  .search-box {
-    display: flex;
-    gap: 12px;
-    max-width: 650px;
-  }
-  .search-box select,
-  .search-box input {
-    padding: 14px 18px;
-    border: 1.5px solid #ddd;
-    border-radius: 10px;
-    font-weight: 600;
-    font-size: 1rem;
-    flex-grow: 1;
-  }
-  .search-box button {
-    background: var(--primary-blue);
-    color: white;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    font-weight: 700;
-    font-size: 1.1rem;
-    padding: 14px 25px;
-    transition: background 0.3s ease;
-  }
-  .search-box button:hover {
-    background: #1e40af;
-  }
-  .profissionais {
-    max-width: 1200px;
-    margin: 60px auto;
-    padding: 0 20px;
-  }
-  .profissionais h2 {
-    font-size: 2rem;
-    color: var(--text-dark);
-    margin-bottom: 24px;
-    font-weight: 700;
-  }
-  .cards {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 24px;
-    justify-content: center;
-  }
-  .card {
-    background: white;
-    padding: 20px;
-    border-radius: 12px;
-    width: 220px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    text-align: center;
-    transition: transform 0.3s ease;
-    cursor: default;
-  }
-  .card:hover {
-    transform: translateY(-7px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.12);
-  }
-  .card img {
-    width: 100%;
-    border-radius: 10px;
-    margin-bottom: 12px;
-  }
-  .card h3 {
-    margin: 0 0 6px 0;
-    font-weight: 700;
-    color: var(--text-dark);
-  }
-  .card p {
-    margin: 0 0 15px 0;
-    color: var(--text-medium);
-    font-weight: 600;
-  }
-  .btn {
-    background: var(--primary-blue);
-    color: white;
-    border: none;
-    border-radius: 10px;
-    padding: 12px 0;
-    width: 100%;
-    font-weight: 700;
-    cursor: pointer;
-    font-size: 1rem;
-    letter-spacing: 0.03em;
-  }
-  .btn:hover {
-    background: #1e40af;
-  }
-  section.form-section {
-    background: white;
-    max-width: 700px;
-    margin: 60px auto;
-    padding: 30px 40px;
-    border-radius: 12px;
-    box-shadow: 0 6px 16px rgba(0,0,0,0.08);
-    font-weight: 600;
-    box-sizing: border-box; 
-    overflow: hidden;       
-  }
-  section.form-section h2 {
-    color: var(--text-dark);
-    font-size: 28px;
-    font-weight: 800;
-    margin-bottom: 18px;
-    border-bottom: 3px solid var(--primary-blue);
-    padding-bottom: 8px;
-  }
-  section.form-section label {
-    display: block;
-    margin: 10px 0 6px;
-    color: var(--text-medium);
-  }
-  section.form-section input,
-  section.form-section select {
-    width: 100%;
-    padding: 12px 18px;
-    margin-bottom: 18px;
-    border-radius: 10px;
-    border: 1.5px solid #ddd;
-    font-size: 16px;
-    font-weight: 600;
-  }
-  section.form-section input:focus,
-  section.form-section select:focus {
-    border-color: var(--primary-blue);
-    outline: none;
-  }
-  #scheduleList, #appointmentResult {
-    margin-top: 15px;
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--primary-blue);
-  }
-  
-  .specialties-preview {
-    max-width: 1200px;
-    margin: 60px auto;
-    padding: 0 20px;
-    text-align: center;
-  }
-  
-  .specialties-preview h2 {
-    font-size: 2rem;
-    color: var(--text-dark);
-    margin-bottom: 30px;
-    font-weight: 700;
-  }
-  
-  .specialty-buttons {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-bottom: 30px;
-  }
-  
-  .specialty-btn {
-    background: var(--primary-blue);
-    color: white;
-    border: none;
-    border-radius: 10px;
-    padding: 12px 20px;
-    font-weight: 600;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background 0.3s ease;
-  }
-  
-  .specialty-btn:hover {
-    background: #1e40af;
-  }
-  
-  .view-all-btn {
-    background: #10b981;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    padding: 12px 30px;
-    font-weight: 700;
-    cursor: pointer;
-    font-size: 1rem;
-    text-decoration: none;
-    display: inline-block;
-    transition: background 0.3s ease;
-  }
-  
-  .view-all-btn:hover {
-    background: #0d9668;
-  }
-
-  @media (max-width: 768px) {
-    .cards {
-      justify-content: center;
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Consultec - Agendamento Médico</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <style>
+    :root {
+      --primary-blue: #2563eb;
+      --text-dark: #333;
+      --text-medium: #555;
+      --bg-light: #f7f9fc;
+    }
+    body {
+      background: var(--bg-light);
+      color: var(--text-dark);
+    }
+    .navbar-brand {
+      font-weight: bold;
+      font-size: 1.5rem;
+    }
+    .btn-primary {
+      background-color: var(--primary-blue);
+      border-color: var(--primary-blue);
+    }
+    .btn-primary:hover {
+      background-color: #1e40af;
+      border-color: #1e40af;
+    }
+    .hero-section {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      margin: 100px auto;
     }
     .card {
-      width: 90%;
-      max-width: 350px;
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
     }
-    .hero h1 {
-      font-size: 2rem;
-    }
-    .hero p {
-      font-size: 1rem;
-    }
-    .specialty-buttons {
-      gap: 8px;
+    .card:hover {
+      transform: translateY(-7px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.12);
     }
     .specialty-btn {
-      padding: 10px 16px;
-      font-size: 0.9rem;
+      background: var(--primary-blue);
+      color: white;
+      border: none;
     }
-  }
-</style>
+    .specialty-btn:hover {
+      background: #1e40af;
+      color: white;
+    }
+    .view-all-btn {
+      background: #10b981;
+      color: white;
+      border: none;
+    }
+    .view-all-btn:hover {
+      background: #0d9668;
+      color: white;
+    }
+
+    .faq-search {
+      border-radius: 50px;
+      padding: 12px 20px;
+    }
+    .faq-category-btn.active {
+      background-color: var(--primary-blue) !important;
+      color: white !important;
+    }
+    .accordion-button:not(.collapsed) {
+      background-color: #f8f9fa;
+      color: var(--primary-blue);
+      font-weight: 600;
+    }
+    .accordion-button:focus {
+      box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.25);
+      border-color: var(--primary-blue);
+    }
+  </style>
 </head>
 <body>
-  <header class="navbar">
-    <a href="index.html" class="logo">Consultec</a>
-    <nav>
-      <a href="#" class="highlight">Início</a>
-      <a href="#profissionais">Profissionais</a>
-      <a href="especialidades.html">Especialidades</a>
-      <a href="#">Contato</a>
-      <a href="cadastro.html" class="btn highlight">Cadastrar</a>
-    </nav>
-  </header>
-  
-  <section class="hero">
-    <h1>Encontre e agende sua consulta</h1>
-    <p>Sua saúde em primeiro lugar. Agende consultas com profissionais qualificados de forma rápida e segura.</p>
-    <div class="search-box">
-      <select id="filterSpecialty">
-        <option value="">Especialidade</option>
-        <option>Cardiologia</option>
-        <option>Dermatologia</option>
-        <option>Ortopedia</option>
-        <option>Pediatria</option>
-        <option>Neurologia</option>
-        <option>Oftalmologia</option>
-      </select>
-      <input type="text" id="filterCity" placeholder="Cidade, Estado" />
-      <button class="btn" onclick="filterDoctors()">Buscar</button>
+<nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top shadow-sm">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="index.html">Consultec</a>
+    
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav mx-auto">
+        <li class="nav-item">
+          <a class="nav-link active fw-semibold" href="#">Início</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link fw-semibold" href="#profissionais">Profissionais</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link fw-semibold" href="especialidades.html">Especialidades</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link fw-semibold" href="#perguntas-respostas">Perguntas</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link fw-semibold" href="#">Contato</a>
+        </li>
+      </ul>
+      
+      <div class="d-flex">
+        <a href="cadastro.html" class="btn btn-primary">Cadastrar</a>
+      </div>
     </div>
-  </section>
-  
-  <section class="profissionais" id="profissionais">
-    <h2>Profissionais em destaque</h2>
-    <div class="cards" id="doctorsList">
+  </div>
+</nav>
+
+  <section class="hero-section py-5">
+    <div class="container">
+      <div class="row justify-content-center text-center">
+        <div class="col-lg-8">
+          <h1 class="display-5 fw-bold mb-4">Encontre e agende sua consulta</h1>
+          <p class="lead mb-4 text-muted">
+            Sua saúde em primeiro lugar. Agende consultas com profissionais qualificados de forma rápida e segura.
+          </p>
+          
+          <div class="row g-3 justify-content-center">
+            <div class="col-md-4">
+              <select class="form-select" id="filterSpecialty">
+                <option value="">Especialidade</option>
+                <option>Cardiologia</option>
+                <option>Dermatologia</option>
+                <option>Ortopedia</option>
+                <option>Pediatria</option>
+                <option>Neurologia</option>
+                <option>Oftalmologia</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <input type="text" class="form-control" id="filterCity" placeholder="Cidade, Estado">
+            </div>
+            <div class="col-md-2">
+              <button class="btn btn-primary w-100" onclick="filterDoctors()">Buscar</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
-  <section class="specialties-preview" id="especialidades">
-    <h2>Especialidades</h2>
-    <p style="color: var(--text-medium); margin-bottom: 30px; max-width: 600px; margin-left: auto; margin-right: auto;">
-      Explore nossas especialidades médicas e encontre o profissional ideal para sua necessidade.
-    </p>
-    <div class="specialty-buttons">
-      <button class="specialty-btn" onclick="filterBySpecialty('')">Todas</button>
-      <button class="specialty-btn" onclick="filterBySpecialty('Cardiologia')">Cardiologia</button>
-      <button class="specialty-btn" onclick="filterBySpecialty('Dermatologia')">Dermatologia</button>
-      <button class="specialty-btn" onclick="filterBySpecialty('Ortopedia')">Ortopedia</button>
-      <button class="specialty-btn" onclick="filterBySpecialty('Pediatria')">Pediatria</button>
-      <button class="specialty-btn" onclick="filterBySpecialty('Neurologia')">Neurologia</button>
-      <button class="specialty-btn" onclick="filterBySpecialty('Oftalmologia')">Oftalmologia</button>
+  <section class="profissionais py-5 bg-light" id="profissionais">
+    <div class="container">
+      <h2 class="text-center mb-5 fw-bold">Profissionais em destaque</h2>
+      <div class="row g-4" id="doctorsList">
+      </div>
     </div>
-    <a href="especialidades.html" class="view-all-btn">Ver Todas as Especialidades</a>
   </section>
 
-  <section class="form-section" id="cadastro-horario">
-    <h2>Cadastro de Horários</h2>
-    <form id="scheduleForm">
-      <label for="date">Data:</label>
-      <input type="date" id="date" required />
-      <label for="startTime">Horário de Início:</label>
-      <input type="time" id="startTime" required />
-      <label for="endTime">Horário de Término:</label>
-      <input type="time" id="endTime" required />
-      <button type="submit" class="btn">Cadastrar Horário</button>
-    </form>
-    <div id="scheduleList"></div>
+  <section class="specialties-preview py-5" id="especialidades">
+    <div class="container">
+      <h2 class="text-center mb-4 fw-bold">Especialidades</h2>
+      <p class="text-center text-muted mb-5 lead">
+        Explore nossas especialidades médicas e encontre o profissional ideal para sua necessidade.
+      </p>
+      
+      <div class="d-flex flex-wrap justify-content-center gap-2 mb-4">
+        <button class="btn specialty-btn" onclick="filterBySpecialty('')">Todas</button>
+        <button class="btn specialty-btn" onclick="filterBySpecialty('Cardiologia')">Cardiologia</button>
+        <button class="btn specialty-btn" onclick="filterBySpecialty('Dermatologia')">Dermatologia</button>
+        <button class="btn specialty-btn" onclick="filterBySpecialty('Ortopedia')">Ortopedia</button>
+        <button class="btn specialty-btn" onclick="filterBySpecialty('Pediatria')">Pediatria</button>
+        <button class="btn specialty-btn" onclick="filterBySpecialty('Neurologia')">Neurologia</button>
+        <button class="btn specialty-btn" onclick="filterBySpecialty('Oftalmologia')">Oftalmologia</button>
+      </div>
+      
+      <div class="text-center">
+        <a href="especialidades.html" class="btn view-all-btn btn-lg">Ver Todas as Especialidades</a>
+      </div>
+    </div>
   </section>
 
-  <div id="modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:9999;">
-    <div style="background:#fff; max-width:400px; margin:100px auto; padding:20px; border-radius:12px; position:relative;">
-      <button onclick="closeModal()" style="position:absolute; top:10px; right:10px; border:none; background:none; font-size:20px; cursor:pointer;">×</button>
-      <div id="modalContent"></div>
+  <section class="form-section py-5 bg-white" id="cadastro-horario">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <div class="card border-0 shadow">
+            <div class="card-body p-5">
+              <h2 class="card-title text-center mb-4 fw-bold border-bottom pb-3">Cadastro de Horários</h2>
+              <form id="scheduleForm">
+                <div class="mb-3">
+                  <label for="date" class="form-label fw-semibold">Data:</label>
+                  <input type="date" class="form-control" id="date" required>
+                </div>
+                <div class="mb-3">
+                  <label for="startTime" class="form-label fw-semibold">Horário de Início:</label>
+                  <input type="time" class="form-control" id="startTime" required>
+                </div>
+                <div class="mb-4">
+                  <label for="endTime" class="form-label fw-semibold">Horário de Término:</label>
+                  <input type="time" class="form-control" id="endTime" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100 py-2">Cadastrar Horário</button>
+              </form>
+              <div id="scheduleList" class="mt-4"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="modal fade" id="modal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Detalhes</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body" id="modalContent">
+        </div>
+      </div>
     </div>
   </div>
 
-  <section class="form-section" id="marcar-consulta">
-    <h2>Marcar Consulta</h2>
-    <form id="appointmentForm">
-      <label for="doctor">Profissional:</label>
-      <select id="doctor" required>
-        <option value="">Selecione um profissional</option>
-      </select>
-      <label for="appointmentDate">Data da Consulta:</label>
-      <input type="date" id="appointmentDate" required />
-      <label for="appointmentTime">Horário da Consulta:</label>
-      <select id="appointmentTime" required>
-        <option value="">Selecione um horário disponível</option>
-      </select>
-      <button type="submit" class="btn">Confirmar Agendamento</button>
-    </form>
-    <div id="appointmentResult"></div>
+  <section class="form-section py-5 bg-light" id="marcar-consulta">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <div class="card border-0 shadow">
+            <div class="card-body p-5">
+              <h2 class="card-title text-center mb-4 fw-bold border-bottom pb-3">Marcar Consulta</h2>
+              <form id="appointmentForm">
+                <div class="mb-3">
+                  <label for="doctor" class="form-label fw-semibold">Profissional:</label>
+                  <select class="form-select" id="doctor" required>
+                    <option value="">Selecione um profissional</option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label for="appointmentDate" class="form-label fw-semibold">Data da Consulta:</label>
+                  <input type="date" class="form-control" id="appointmentDate" required>
+                </div>
+                <div class="mb-4">
+                  <label for="appointmentTime" class="form-label fw-semibold">Horário da Consulta:</label>
+                  <select class="form-select" id="appointmentTime" required>
+                    <option value="">Selecione um horário disponível</option>
+                  </select>
+                </div>
+                <button type="submit" class="btn btn-primary w-100 py-2">Confirmar Agendamento</button>
+              </form>
+              <div id="appointmentResult" class="mt-4"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </section>
 
-<script>
-  const doctors = [
-    {name: "Dr. Carlos Monteiro", specialty: "Cardiologia", city: "São Paulo, SP", photo:"https://images.pexels.com/photos/5327914/pexels-photo-5327914.jpeg"},
-    {name: "Dra. Sofia Silva", specialty: "Dermatologia", city: "Rio de Janeiro, RJ", photo:"https://images.pexels.com/photos/5069589/pexels-photo-5069589.jpeg"},
-    {name: "Dr. Roberto Lima", specialty: "Ortopedia", city: "Belo Horizonte, MG", photo:"https://surgpli.com/wp-content/uploads/2023/03/AdobeStock_541200278.jpg"},
-    {name: "Dra. Juliana Faria", specialty: "Pediatria", city: "Porto Alegre, RS", photo:"https://freerangestock.com/sample/146000/young-pediatrician-doctor-and-child-patient.jpg"},
-    {name: "Dr. Analdo Costa", specialty: "Cardiologia", city: "Rio de Janeiro, RJ", photo:"https://st2.depositphotos.com/1051355/7204/i/450/depositphotos_72042723-stock-photo-doctor-with-stethoscope-and-heart.jpg"},
-    {name: "Dr. Marcos Oliveira", specialty: "Dermatologia", city: "Belo Horizonte, MG", photo:"https://s3.ap-southeast-2.amazonaws.com/cdn.basscoastskindoctors.com.au/wp-content/uploads/2021/12/16111303/Skin-specialist-vs-skin-doctor-whats-the-difference-HERO.jpg"}
-  ];
+  <section class="py-5 bg-white" id="perguntas-respostas">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-10">
+          <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold mb-3">Perguntas Frequentes</h2>
+            <p class="lead text-muted">Tire suas dúvidas sobre agendamentos, consultas e nossos serviços</p>
+          </div>
 
-  let schedules = [];
+          <div class="row justify-content-center mb-5">
+            <div class="col-md-8">
+              <div class="input-group input-group-lg">
+                <input type="text" class="form-control faq-search" placeholder="Digite sua pergunta..." id="searchFAQ">
+                <button class="btn btn-primary faq-search" type="button" id="searchFAQBtn">
+                  <i class="bi bi-search"></i>
+                </button>
+              </div>
+            </div>
+          </div>
 
-  function checkRedirectData() {
-    const selectedDoctor = localStorage.getItem('selectedDoctor');
-    const selectedSpecialty = localStorage.getItem('selectedSpecialty');
-    
-    if (selectedDoctor && selectedSpecialty) {
-      document.getElementById('doctor').value = selectedDoctor;
+          <div class="row mb-4">
+            <div class="col-12">
+              <div class="d-flex flex-wrap gap-2 justify-content-center" id="faqCategories">
+                <button class="btn btn-outline-primary faq-category-btn active" data-category="all">Todas</button>
+                <button class="btn btn-outline-primary faq-category-btn" data-category="agendamento">Agendamento</button>
+                <button class="btn btn-outline-primary faq-category-btn" data-category="consultas">Consultas</button>
+                <button class="btn btn-outline-primary faq-category-btn" data-category="profissionais">Profissionais</button>
+                <button class="btn btn-outline-primary faq-category-btn" data-category="pagamento">Pagamento</button>
+                <button class="btn btn-outline-primary faq-category-btn" data-category="outros">Outros</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion" id="faqAccordion">
+            <div class="accordion-item" data-category="agendamento">
+              <h3 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                  Como faço para agendar uma consulta?
+                </button>
+              </h3>
+              <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  <p>Para agendar uma consulta, você pode:</p>
+                  <ol>
+                    <li>Buscar por especialidade ou profissional na nossa página inicial</li>
+                    <li>Selecionar o profissional desejado</li>
+                    <li>Escolher a data e horário disponíveis</li>
+                    <li>Preencher seus dados e confirmar o agendamento</li>
+                  </ol>
+                  <p class="mb-0">Todo o processo é feito online de forma rápida e segura.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion-item" data-category="agendamento">
+              <h3 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                  Posso cancelar ou remarcar uma consulta?
+                </button>
+              </h3>
+              <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  <p>Sim, você pode cancelar ou remarcar sua consulta até 24 horas antes do horário agendado.</p>
+                  <p><strong>Para cancelar:</strong> Acesse "Minhas Consultas" no seu perfil e clique em cancelar.</p>
+                  <p><strong>Para remarcar:</strong> Cancele a consulta atual e agende uma nova no horário desejado.</p>
+                  <p class="text-muted mb-0">Cancelamentos em cima da hora podem estar sujeitos a políticas específicas do profissional.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion-item" data-category="consultas">
+              <h3 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                  As consultas são presenciais ou online?
+                </button>
+              </h3>
+              <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  <p>Oferecemos ambos os tipos de consulta:</p>
+                  <ul>
+                    <li><strong>Consultas Presenciais:</strong> Realizadas no consultório do profissional</li>
+                    <li><strong>Consultas Online:</strong> Realizadas por videoconferência</li>
+                  </ul>
+                  <p>Na hora do agendamento, você poderá escolher o tipo de consulta de acordo com a disponibilidade do profissional.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion-item" data-category="consultas">
+              <h3 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                  Preciso de algum preparo para a consulta online?
+                </button>
+              </h3>
+              <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  <p>Para uma consulta online ideal, recomendamos:</p>
+                  <ul>
+                    <li>Conexão estável com a internet</li>
+                    <li>Dispositivo com câmera e microfone</li>
+                    <li>Ambiente tranquilo e privativo</li>
+                    <li>Documentos médicos anteriores (se houver)</li>
+                    <li>Lista de medicamentos em uso</li>
+                  </ul>
+                  <p class="mb-0">O link da videoconferência será enviado por email antes da consulta.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion-item" data-category="profissionais">
+              <h3 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
+                  Como são selecionados os profissionais da plataforma?
+                </button>
+              </h3>
+              <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  <p>Todos os profissionais da Consultec passam por um rigoroso processo de verificação:</p>
+                  <ul>
+                    <li>Validação de CRM/registro profissional</li>
+                    <li>Confirmação de formação acadêmica</li>
+                    <li>Verificação de experiência profissional</li>
+                    <li>Avaliação de certificações e especializações</li>
+                  </ul>
+                  <p class="mb-0">Além disso, mantemos um sistema de avaliações dos pacientes para garantir a qualidade do serviço.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion-item" data-category="pagamento">
+              <h3 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq6">
+                  Quais formas de pagamento são aceitas?
+                </button>
+              </h3>
+              <div id="faq6" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  <p>Aceitamos as seguintes formas de pagamento:</p>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <ul>
+                        <li>Cartão de Crédito (até 12x)</li>
+                        <li>Cartão de Débito</li>
+                        <li>PIX</li>
+                      </ul>
+                    </div>
+                    <div class="col-md-6">
+                      <ul>
+                        <li>Boleto Bancário</li>
+                        <li>Convênios Parceiros</li>
+                        <li>Carteira Digital</li>
+                      </ul>
+                    </div>
+                  </div>
+                  <p class="mb-0">O pagamento é processado de forma segura através de nosso sistema.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion-item" data-category="outros">
+              <h3 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq7">
+                  Meus dados estão seguros na plataforma?
+                </button>
+              </h3>
+              <div id="faq7" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                  <p>Sim, a segurança dos seus dados é nossa prioridade:</p>
+                  <ul>
+                    <li>Criptografia de ponta a ponta</li>
+                    <li>Conformidade com a LGPD</li>
+                    <li>Dados médicos tratados com confidencialidade</li>
+                    <li>Políticas rigorosas de privacidade</li>
+                    <li>Backup regular das informações</li>
+                  </ul>
+                  <p class="mb-0">Seus dados são utilizados apenas para melhorar sua experiência e nunca são compartilhados sem sua autorização.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="text-center mt-5">
+            <p class="text-muted mb-3">Não encontrou o que procurava?</p>
+            <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#contactModal">
+              <i class="bi bi-question-circle me-2"></i>Entre em Contato
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="modal fade" id="contactModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title fw-bold">Entre em Contato</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="contactForm">
+            <div class="mb-3">
+              <label for="contactName" class="form-label">Nome</label>
+              <input type="text" class="form-control" id="contactName" required>
+            </div>
+            <div class="mb-3">
+              <label for="contactEmail" class="form-label">Email</label>
+              <input type="email" class="form-control" id="contactEmail" required>
+            </div>
+            <div class="mb-3">
+              <label for="contactQuestion" class="form-label">Sua Pergunta</label>
+              <textarea class="form-control" id="contactQuestion" rows="4" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Enviar Pergunta</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <script>
+    const doctors = [
+      {name: "Dr. Carlos Monteiro", specialty: "Cardiologia", city: "São Paulo, SP", photo:"https://images.pexels.com/photos/5327914/pexels-photo-5327914.jpeg"},
+      {name: "Dra. Sofia Silva", specialty: "Dermatologia", city: "Rio de Janeiro, RJ", photo:"https://images.pexels.com/photos/5069589/pexels-photo-5069589.jpeg"},
+      {name: "Dr. Roberto Lima", specialty: "Ortopedia", city: "Belo Horizonte, MG", photo:"https://surgpli.com/wp-content/uploads/2023/03/AdobeStock_541200278.jpg"},
+      {name: "Dra. Juliana Faria", specialty: "Pediatria", city: "Porto Alegre, RS", photo:"https://freerangestock.com/sample/146000/young-pediatrician-doctor-and-child-patient.jpg"},
+      {name: "Dr. Analdo Costa", specialty: "Cardiologia", city: "Rio de Janeiro, RJ", photo:"https://st2.depositphotos.com/1051355/7204/i/450/depositphotos_72042723-stock-photo-doctor-with-stethoscope-and-heart.jpg"},
+      {name: "Dr. Marcos Oliveira", specialty: "Dermatologia", city: "Belo Horizonte, MG", photo:"https://s3.ap-southeast-2.amazonaws.com/cdn.basscoastskindoctors.com.au/wp-content/uploads/2021/12/16111303/Skin-specialist-vs-skin-doctor-whats-the-difference-HERO.jpg"}
+    ];
+
+    let schedules = [];
+
+    function checkRedirectData() {
+      const selectedDoctor = localStorage.getItem('selectedDoctor');
+      const selectedSpecialty = localStorage.getItem('selectedSpecialty');
+      
+      if (selectedDoctor && selectedSpecialty) {
+        document.getElementById('doctor').value = selectedDoctor;
+        
+        document.getElementById('marcar-consulta').scrollIntoView({ 
+          behavior: 'smooth' 
+        });
+        
+        localStorage.removeItem('selectedDoctor');
+        localStorage.removeItem('selectedSpecialty');
+      }
+    }
+
+    function filterDoctors() {
+      const specialty = document.getElementById("filterSpecialty").value.toLowerCase();
+      const city = document.getElementById("filterCity").value.toLowerCase();
+      const list = doctors.filter(doc =>
+        (!specialty || doc.specialty.toLowerCase() === specialty) &&
+        (!city || doc.city.toLowerCase().includes(city))
+      );
+      renderDoctors(list);
+    }
+
+    function filterBySpecialty(specialty) {
+      const list = specialty ? doctors.filter(doc => doc.specialty === specialty) : doctors;
+      renderDoctors(list);
+      
+      document.getElementById('profissionais').scrollIntoView({ 
+        behavior: 'smooth' 
+      });
+    }
+
+    function renderDoctors(list) {
+      const container = document.getElementById("doctorsList");
+      container.innerHTML = "";
+      
+      if(list.length === 0) {
+        container.innerHTML = '<div class="col-12 text-center"><p class="text-muted">Nenhum profissional encontrado.</p></div>';
+        return;
+      }
+      
+      list.forEach(doc => {
+        const col = document.createElement("div");
+        col.className = "col-md-6 col-lg-4";
+        col.innerHTML = `
+          <div class="card h-100">
+            <img src="${doc.photo}" class="card-img-top" alt="${doc.name}" style="height: 200px; object-fit: cover;">
+            <div class="card-body text-center">
+              <h5 class="card-title fw-bold">${doc.name}</h5>
+              <p class="card-text text-primary fw-semibold">${doc.specialty}</p>
+              <p class="card-text text-muted">${doc.city}</p>
+              <button class="btn btn-primary w-100" onclick="scheduleWithDoctor('${doc.name}')">
+                Agendar Consulta
+              </button>
+            </div>
+          </div>
+        `;
+        container.appendChild(col);
+      });
+    }
+
+    function scheduleWithDoctor(doctorName) {
+      document.getElementById('doctor').value = doctorName;
       
       document.getElementById('marcar-consulta').scrollIntoView({ 
         behavior: 'smooth' 
       });
+    }
+
+    function renderSchedules() {
+      const container = document.getElementById("scheduleList");
+      if (schedules.length === 0) {
+        container.innerHTML = "<p class='text-muted'>Nenhum horário cadastrado ainda.</p>";
+        return;
+      }
+      container.innerHTML = "<h5>Horários Cadastrados:</h5><ul class='list-group'>" +
+        schedules.map(sch => `<li class="list-group-item">${sch.date} - ${sch.startTime} às ${sch.endTime}</li>`).join("") +
+        "</ul>";
+    }
+
+    document.getElementById("scheduleForm").addEventListener("submit", e => {
+      e.preventDefault();
+      const date = document.getElementById("date").value;
+      const startTime = document.getElementById("startTime").value;
+      const endTime = document.getElementById("endTime").value;
       
-      localStorage.removeItem('selectedDoctor');
-      localStorage.removeItem('selectedSpecialty');
-    }
-  }
-
-  function filterDoctors() {
-    const specialty = document.getElementById("filterSpecialty").value.toLowerCase();
-    const city = document.getElementById("filterCity").value.toLowerCase();
-    const list = doctors.filter(doc =>
-      (!specialty || doc.specialty.toLowerCase() === specialty) &&
-      (!city || doc.city.toLowerCase().includes(city))
-    );
-    renderDoctors(list);
-  }
-
-  function filterBySpecialty(specialty) {
-    const list = specialty ? doctors.filter(doc => doc.specialty === specialty) : doctors;
-    renderDoctors(list);
-    
-    document.getElementById('profissionais').scrollIntoView({ 
-      behavior: 'smooth' 
+      if(startTime >= endTime){
+        alert("O horário inicial deve ser anterior ao horário final.");
+        return;
+      }
+      
+      schedules.push({date, startTime, endTime});
+      renderSchedules();
+      e.target.reset();
     });
-  }
 
-  function renderDoctors(list) {
-    const container = document.getElementById("doctorsList");
-    container.innerHTML = "";
-    if(list.length === 0) {
-      container.innerHTML = "<p>Nenhum profissional encontrado.</p>";
-      return;
-    }
-    list.forEach(doc => {
-      const card = document.createElement("div");
-      card.className = "card";
-      card.innerHTML = `
-        <img src="${doc.photo}" alt="${doc.name}" />
-        <h3>${doc.name}</h3>
-        <p>${doc.specialty}</p>
-        <p>${doc.city}</p>
-        <button class="btn" onclick="scheduleWithDoctor('${doc.name}')">Agendar Consulta</button>
-      `;
-      container.appendChild(card);
+    document.getElementById("appointmentDate").addEventListener("change", () => {
+      const selectedDate = document.getElementById("appointmentDate").value;
+      const timeSelect = document.getElementById("appointmentTime");
+      timeSelect.innerHTML = "<option value=''>Selecione um horário disponível</option>";
+      
+      const availableSchedules = schedules.filter(sch => sch.date === selectedDate);
+      if(availableSchedules.length === 0) {
+        timeSelect.innerHTML += "<option disabled>Nenhum horário disponível para esta data</option>";
+        return;
+      }
+      
+      availableSchedules.forEach(sch => {
+        const option = document.createElement("option");
+        option.value = sch.startTime;
+        option.textContent = `${sch.startTime} às ${sch.endTime}`;
+        timeSelect.appendChild(option);
+      });
     });
-  }
 
-  function scheduleWithDoctor(doctorName) {
-    document.getElementById('doctor').value = doctorName;
-    
-    document.getElementById('marcar-consulta').scrollIntoView({ 
-      behavior: 'smooth' 
+    document.getElementById("doctor").innerHTML = 
+      '<option value="">Selecione um profissional</option>' +
+      doctors.map(doc => `<option value="${doc.name}">${doc.name} - ${doc.specialty}</option>`).join("");
+
+    document.getElementById("appointmentForm").addEventListener("submit", e => {
+      e.preventDefault();
+      const doctor = document.getElementById("doctor").value;
+      const date = document.getElementById("appointmentDate").value;
+      const time = document.getElementById("appointmentTime").value;
+      
+      if(!doctor || !date || !time){
+        alert("Por favor, preencha todos os campos para marcar a consulta.");
+        return;
+      }
+      
+      document.getElementById("appointmentResult").innerHTML = 
+        `<div class="alert alert-success">✅ Consulta marcada com <strong>${doctor}</strong> no dia <strong>${date}</strong> às <strong>${time}</strong>.</div>`;
+      
+      e.target.reset();
+      document.getElementById("appointmentTime").innerHTML = "<option value=''>Selecione um horário disponível</option>";
     });
-  }
 
-  function renderSchedules() {
-    const container = document.getElementById("scheduleList");
-    if (schedules.length === 0) {
-      container.innerHTML = "<p>Nenhum horário cadastrado ainda.</p>";
-      return;
-    }
-    container.innerHTML = "<h3>Horários Cadastrados:</h3><ul>" +
-      schedules.map(sch => `<li>${sch.date} - ${sch.startTime} às ${sch.endTime}</li>`).join("") +
-      "</ul>";
-  }
+    document.addEventListener('DOMContentLoaded', function() {
+      renderDoctors(doctors);
+      renderSchedules();
+      checkRedirectData();
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById('date').min = today;
+      document.getElementById('appointmentDate').min = today;
 
-  document.getElementById("scheduleForm").addEventListener("submit", e => {
-    e.preventDefault();
-    const date = document.getElementById("date").value;
-    const startTime = document.getElementById("startTime").value;
-    const endTime = document.getElementById("endTime").value;
-    if(startTime >= endTime){
-      alert("O horário inicial deve ser anterior ao horário final.");
-      return;
-    }
-    schedules.push({date, startTime, endTime});
-    renderSchedules();
-    e.target.reset();
-  });
+      const categoryButtons = document.querySelectorAll('#faqCategories .btn');
+      const faqItems = document.querySelectorAll('.accordion-item');
+      
+      categoryButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          categoryButtons.forEach(btn => btn.classList.remove('active'));
+          this.classList.add('active');
+          
+          const category = this.getAttribute('data-category');
+ 
+          faqItems.forEach(item => {
+            if (category === 'all' || item.getAttribute('data-category') === category) {
+              item.style.display = 'block';
+            } else {
+              item.style.display = 'none';
+            }
+          });
+        });
+      });
 
-  document.getElementById("appointmentDate").addEventListener("change", () => {
-    const selectedDate = document.getElementById("appointmentDate").value;
-    const timeSelect = document.getElementById("appointmentTime");
-    timeSelect.innerHTML = "<option value=''>Selecione um horário disponível</option>";
-    const availableSchedules = schedules.filter(sch => sch.date === selectedDate);
-    if(availableSchedules.length === 0) {
-      timeSelect.innerHTML += "<option disabled>Nenhum horário disponível para esta data</option>";
-      return;
-    }
-    availableSchedules.forEach(sch => {
-      const option = document.createElement("option");
-      option.value = sch.startTime;
-      option.textContent = `${sch.startTime} às ${sch.endTime}`;
-      timeSelect.appendChild(option);
+      const searchInput = document.getElementById('searchFAQ');
+      const searchButton = document.getElementById('searchFAQBtn');
+      
+      function performSearch() {
+        const searchTerm = searchInput.value.toLowerCase();
+        
+        faqItems.forEach(item => {
+          const question = item.querySelector('.accordion-button').textContent.toLowerCase();
+          const answer = item.querySelector('.accordion-body').textContent.toLowerCase();
+          
+          if (question.includes(searchTerm) || answer.includes(searchTerm)) {
+            item.style.display = 'block';
+          } else {
+            item.style.display = 'none';
+          }
+        });
+      }
+      
+      searchInput.addEventListener('input', performSearch);
+      searchButton.addEventListener('click', performSearch);
+
+      document.getElementById('contactForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        alert('Sua pergunta foi enviada! Entraremos em contato em breve.');
+        const modal = bootstrap.Modal.getInstance(document.getElementById('contactModal'));
+        modal.hide();
+        this.reset();
+      });
     });
-  });
-
-  document.getElementById("doctor").innerHTML = 
-    '<option value="">Selecione um profissional</option>' +
-    doctors.map(doc => `<option value="${doc.name}">${doc.name} - ${doc.specialty}</option>`).join("");
-
-  document.getElementById("appointmentForm").addEventListener("submit", e => {
-    e.preventDefault();
-    const doctor = document.getElementById("doctor").value;
-    const date = document.getElementById("appointmentDate").value;
-    const time = document.getElementById("appointmentTime").value;
-    if(!doctor || !date || !time){
-      alert("Por favor, preencha todos os campos para marcar a consulta.");
-      return;
-    }
-    document.getElementById("appointmentResult").innerHTML = 
-      `<p style="color: var(--primary-blue); font-weight: 700;">✅ Consulta marcada com <strong>${doctor}</strong> no dia <strong>${date}</strong> às <strong>${time}</strong>.</p>`;
-    e.target.reset();
-    document.getElementById("appointmentTime").innerHTML = "<option value=''>Selecione um horário disponível</option>";
-  });
-
-  function closeModal() {
-    document.getElementById("modal").style.display = "none";
-  }
-
-  document.addEventListener('DOMContentLoaded', function() {
-    renderDoctors(doctors);
-    renderSchedules();
-    checkRedirectData();
-    const today = new Date().toISOString().split('T')[0];
-    document.getElementById('date').min = today;
-    document.getElementById('appointmentDate').min = today;
-  });
-</script>
+  </script>
 </body>
 </html>
