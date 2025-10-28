@@ -4,214 +4,350 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login - Consultec</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
   <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f9f9f9;
-      margin: 0;
-      padding: 0;
+    :root {
+      --primary-blue: #2563eb;
     }
-
-  
-    .navbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 15px 60px;
-      background: #029680;
-      border-bottom: 1px solid #ffffff;
-    }
-    .navbar .logo {
-      font-size: 20px;
-      font-weight: bold;
-      color: #ffffff;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .navbar nav a {
-      margin: 0 15px;
-      text-decoration: none;
-      color: #ffffff;
-      font-weight: 500;
-    }
-    .navbar .buttons a {
-      text-decoration: none;
-      padding: 8px 18px;
-      border-radius: 6px;
-      font-weight: 500;
-    }
-    .navbar .buttons .login {
-      color: #1e40af;
-    }
-    .navbar .buttons .signup {
-      background: #2563eb;
-      color: #fff;
-    }
-
-  
-    .container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 150px 20px;
-    }
-
-    .card {
-      background: #fff;
-      padding: 35px 40px;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-      width: 100%;
-      max-width: 400px;
-      text-align: center;
-    }
-
-    .card h2 {
-      margin: 15px 0 10px;
-      font-size: 22px;
-      color: #111;
-    }
-
-    .card p {
-      margin: 0 0 25px;
-      font-size: 14px;
-      color: #666;
-    }
-
-    .card input {
-      width: 100%;
-      padding: 12px;
-      margin-bottom: 15px;
-      border: 1px solid #ddd;
-      border-radius: 6px;
-      font-size: 14px;
-    }
-
     
-    .card .forgot {
-      text-align: right;
-      font-size: 13px;
-      margin-top: -10px;
-      margin-bottom: 15px;
+    .auth-container {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     }
-    .card .forgot a {
-      text-decoration: none;
-      color: #2563eb;
-      font-weight: 500;
-    }
-
-    /* Botões */
-    .btn {
-      display: inline-block;
-      width: 100%;
-      padding: 12px;
-      background: #2563eb;
-      color: #fff;
-      border: none;
-      border-radius: 6px;
-      font-size: 15px;
-      cursor: pointer;
-      font-weight: 500;
-      margin-bottom: 12px;
-    }
-    .btn:hover {
-      background: #1e40af;
-    }
-
+    
     .btn-google {
-      display: inline-block;
-      width: 100%;
-      padding: 12px;
-      background: #fff;
+      background: white;
+      color: #333;
       border: 1px solid #ddd;
-      border-radius: 6px;
-      font-size: 15px;
-      cursor: pointer;
-      font-weight: 500;
+      transition: all 0.3s ease;
     }
-
-    .card .signup-link {
-      margin-top: 15px;
-      font-size: 14px;
-    }
-    .card .signup-link a {
-      color: #2563eb;
-      font-weight: 500;
-      text-decoration: none;
-    }
-
     
-    footer {
-      margin-top: 160px;
-      padding: 20px;
-      background: #fff;
-      border-top: 1px solid #eee;
-      text-align: center;
-      font-size: 13px;
-      color: #666;
+    .btn-google:hover {
+      background: #f8f9fa;
+      border-color: #ccc;
     }
-    footer a {
-      color: #2563eb;
-      text-decoration: none;
-      margin: 0 5px;
+    
+    .btn-primary {
+      background-color: var(--primary-blue);
+      border-color: var(--primary-blue);
+    }
+    
+    .btn-primary:hover {
+      background-color: #1e40af;
+      border-color: #1e40af;
+    }
+    
+    .btn-professional {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: white;
+      border: none;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-professional:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+      color: white;
     }
   </style>
 </head>
 <body>
- 
-  <header class="navbar">
-    <div class="logo">⚕️ Consultec</div>
-    <nav>
-      <a href="#">Profissionais</a>
-      <a href="#">Serviços</a>
-      <a href="#">Sobre nós</a>
+  <div class="auth-container">
+    <nav class="navbar navbar-expand-lg navbar-dark">
+      <div class="container">
+        <a class="navbar-brand fw-bold" href="index.html">
+          <i class="bi bi-heart-pulse me-2"></i>Consultec
+        </a>
+        <div class="navbar-nav ms-auto">
+          <a href="cadastro.html" class="nav-link">Cadastrar</a>
+        </div>
+      </div>
     </nav>
-    <div class="buttons">
-      <a href="login.html" class="login">Entrar</a>
-      <a href="cadastro.html" class="signup">Cadastrar</a>
-    </div>
-  </header>
 
- 
-  <main class="container">
-    <div class="card">
-      <h2>Acesse sua conta</h2>
-      <p>Bem-vindo de volta! Insira seus dados para continuar.</p>
-      <form>
-        <input type="email" placeholder="Email" required>
-        <input type="password" placeholder="Senha" required>
-        <div class="forgot"><a href="#">Esqueceu sua senha?</a></div>
+    <div class="container py-5">
+      <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+          <div class="card shadow-lg border-0">
+            <div class="card-body p-5">
+              <div class="text-center mb-4">
+                <i class="bi bi-heart-pulse text-primary" style="font-size: 3rem;"></i>
+                <h2 class="mt-3 fw-bold">Acesse sua conta</h2>
+                <p class="text-muted">Bem-vindo de volta! Escolha seu tipo de acesso.</p>
+              </div>
 
-        <button type="submit" class="btn">Entrar</button>
-        <button type="button" class="btn-google">Entrar com Google</button>
-      </form>
-      <div class="signup-link">
-        Não tem uma conta? <a href="cadastro.html">Cadastre-se</a>
+              <div class="text-center mb-4">
+                <button class="btn btn-professional btn-lg w-100 py-3 fw-semibold mb-3" 
+                        data-bs-toggle="modal" data-bs-target="#professionalLoginModal">
+                  <i class="bi bi-briefcase me-2"></i>Área do Profissional
+                </button>
+                <small class="text-muted">Acesso exclusivo para médicos e profissionais de saúde</small>
+              </div>
+
+              <hr class="my-4">
+
+              <h5 class="fw-bold mb-4 text-center">
+                <i class="bi bi-person me-2"></i>Login para Pacientes
+              </h5>
+
+              <form id="loginForm">
+                <div class="mb-3">
+                  <label for="email" class="form-label fw-semibold">Email</label>
+                  <input type="email" class="form-control form-control-lg" id="email" placeholder="seu@email.com" required>
+                </div>
+
+                <div class="mb-3">
+                  <label for="cpf" class="form-label fw-semibold">CPF</label>
+                  <input type="text" class="form-control form-control-lg" id="cpf" placeholder="000.000.000-00" required>
+                </div>
+
+                <div class="mb-3">
+                  <label for="rg" class="form-label fw-semibold">RG</label>
+                  <input type="text" class="form-control form-control-lg" id="rg" placeholder="00.000.000-0" required>
+                </div>
+
+                <div class="mb-3">
+                  <label for="password" class="form-label fw-semibold">Senha</label>
+                  <input type="password" class="form-control form-control-lg" id="password" placeholder="Sua senha" required>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="rememberMe">
+                    <label class="form-check-label small" for="rememberMe">
+                      Lembrar-me
+                    </label>
+                  </div>
+                  <a href="#" class="text-primary text-decoration-none small fw-semibold">
+                    Esqueceu sua senha?
+                  </a>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-lg w-100 py-3 fw-semibold mb-3">
+                  <i class="bi bi-box-arrow-in-right me-2"></i>Entrar como Paciente
+                </button>
+
+                <div class="position-relative text-center my-4">
+                  <hr>
+                  <span class="position-absolute top-50 start-50 translate-middle bg-white px-3 text-muted">
+                    ou
+                  </span>
+                </div>
+
+                <button type="button" class="btn btn-google btn-lg w-100 py-3 fw-semibold">
+                  <i class="bi bi-google me-2"></i>Entrar com Google
+                </button>
+
+                <div class="text-center mt-4">
+                  <p class="text-muted">
+                    Não tem uma conta? 
+                    <a href="cadastro.html" class="text-primary text-decoration-none fw-semibold">Cadastre-se</a>
+                  </p>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <div class="text-center mt-4">
+            <p class="text-white mb-0">
+              © 2025 Consultec. Todos os direitos reservados.
+              <a href="#" class="text-white text-decoration-none mx-2">Termos</a>
+              <a href="#" class="text-white text-decoration-none mx-2">Privacidade</a>
+            </p>
+          </div>
+        </div>
       </div>
     </div>
-  </main>
+  </div>
 
+  <div class="modal fade" id="professionalLoginModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title fw-bold">
+            <i class="bi bi-briefcase text-success me-2"></i>Área do Profissional
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="professionalLoginForm">
+            <div class="mb-3">
+              <label for="professionalCrm" class="form-label fw-semibold">CRM/Registro Profissional *</label>
+              <input type="text" class="form-control" id="professionalCrm" placeholder="Seu número de registro" required>
+            </div>
+
+            <div class="mb-3">
+              <label for="professionalName" class="form-label fw-semibold">Nome Completo *</label>
+              <input type="text" class="form-control" id="professionalName" placeholder="Seu nome completo" required>
+            </div>
+
+            <div class="mb-3">
+              <label for="professionalCpf" class="form-label fw-semibold">CPF *</label>
+              <input type="text" class="form-control" id="professionalCpf" placeholder="000.000.000-00" required>
+            </div>
+
+            <div class="mb-3">
+              <label for="professionalRg" class="form-label fw-semibold">RG *</label>
+              <input type="text" class="form-control" id="professionalRg" placeholder="00.000.000-0" required>
+            </div>
+
+            <div class="mb-3">
+              <label for="professionalEmail" class="form-label fw-semibold">Email *</label>
+              <input type="email" class="form-control" id="professionalEmail" placeholder="seu@email.com" required>
+            </div>
+
+            <div class="mb-3">
+              <label for="professionalSpecialty" class="form-label fw-semibold">Especialidade *</label>
+              <select class="form-select" id="professionalSpecialty" required>
+                <option value="">Selecione sua especialidade</option>
+                <option value="Cardiologia">Cardiologia</option>
+                <option value="Dermatologia">Dermatologia</option>
+                <option value="Ortopedia">Ortopedia</option>
+                <option value="Pediatria">Pediatria</option>
+                <option value="Neurologia">Neurologia</option>
+                <option value="Oftalmologia">Oftalmologia</option>
+                <option value="Clínico Geral">Clínico Geral</option>
+                <option value="Outra">Outra</option>
+              </select>
+            </div>
+
+            <div class="mb-4">
+              <label for="professionalPassword" class="form-label fw-semibold">Senha de Acesso *</label>
+              <input type="password" class="form-control" id="professionalPassword" placeholder="Sua senha profissional" required>
+            </div>
+
+            <button type="submit" class="btn btn-success btn-lg w-100 py-3 fw-semibold">
+              <i class="bi bi-shield-check me-2"></i>Acessar Área Profissional
+            </button>
+          </form>
+
+          <div class="text-center mt-3">
+            <small class="text-muted">
+              É profissional mas ainda não tem cadastro? 
+              <a href="cadastro.html" class="text-success text-decoration-none fw-semibold">Cadastre-se aqui</a>
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   
-  <footer>
-    <p>© 2025 Consultec. Todos os direitos reservados. |
-      <a href="#">Termos de Serviço</a> |
-      <a href="#">Política de Privacidade</a>
-    </p>
-  </footer>
   <script>
-  document.querySelector("form").addEventListener("submit", function(e) {
-    e.preventDefault(); 
+    document.getElementById("loginForm").addEventListener("submit", function(e) {
+      e.preventDefault();
 
-    const email = document.querySelector('input[type="email"]').value;
-    const senha = document.querySelector('input[type="password"]').value;
-    if (email && senha) {
-      alert("Login realizado com sucesso!");
-      window.location.href = "index.html";
-    } else {
-      alert("Preencha todos os campos.");
+      const email = document.getElementById("email").value;
+      const cpf = document.getElementById("cpf").value;
+      const rg = document.getElementById("rg").value;
+      const password = document.getElementById("password").value;
+
+      const submitBtn = this.querySelector('button[type="submit"]');
+      const originalText = submitBtn.innerHTML;
+      submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Entrando...';
+      submitBtn.disabled = true;
+
+      setTimeout(() => {
+        if (email && cpf && rg && password) {
+          sessionStorage.setItem('userType', 'paciente');
+          sessionStorage.setItem('userEmail', email);
+          alert("Login realizado com sucesso!");
+          window.location.href = "index.html";
+        } else {
+          alert("Por favor, preencha todos os campos.");
+          submitBtn.innerHTML = originalText;
+          submitBtn.disabled = false;
+        }
+      }, 1500);
+    });
+
+    document.getElementById("professionalLoginForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const crm = document.getElementById("professionalCrm").value;
+      const name = document.getElementById("professionalName").value;
+      const cpf = document.getElementById("professionalCpf").value;
+      const rg = document.getElementById("professionalRg").value;
+      const email = document.getElementById("professionalEmail").value;
+      const specialty = document.getElementById("professionalSpecialty").value;
+      const password = document.getElementById("professionalPassword").value;
+
+      const submitBtn = this.querySelector('button[type="submit"]');
+      const originalText = submitBtn.innerHTML;
+      submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Validando acesso...';
+      submitBtn.disabled = true;
+
+      setTimeout(() => {
+        if (crm && name && cpf && rg && email && specialty && password) {
+          sessionStorage.setItem('userType', 'profissional');
+          sessionStorage.setItem('professionalCrm', crm);
+          sessionStorage.setItem('professionalName', name);
+          sessionStorage.setItem('professionalSpecialty', specialty);
+          sessionStorage.setItem('userEmail', email);
+          
+          alert("Acesso profissional concedido! Redirecionando...");
+
+          const modal = bootstrap.Modal.getInstance(document.getElementById('professionalLoginModal'));
+          modal.hide();
+
+          window.location.href = "profissional-dashboard.html";
+        } else {
+          alert("Por favor, preencha todos os campos do acesso profissional.");
+          submitBtn.innerHTML = originalText;
+          submitBtn.disabled = false;
+        }
+      }, 1500);
+    });
+
+    document.querySelector('.btn-google').addEventListener('click', function() {
+      alert("Funcionalidade de login com Google será implementada em breve!");
+    });
+
+    function aplicarMascaraCPF(input) {
+      input.addEventListener('input', function(e) {
+        let value = e.target.value.replace(/\D/g, '');
+        if (value.length > 11) value = value.substring(0, 11);
+        
+        if (value.length > 9) {
+          value = value.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+        } else if (value.length > 6) {
+          value = value.replace(/(\d{3})(\d{3})(\d{0,3})/, '$1.$2.$3');
+        } else if (value.length > 3) {
+          value = value.replace(/(\d{3})(\d{0,3})/, '$1.$2');
+        }
+        
+        e.target.value = value;
+      });
     }
-  });
-</script>
+
+    function aplicarMascaraRG(input) {
+      input.addEventListener('input', function(e) {
+        let value = e.target.value.replace(/\D/g, '');
+        if (value.length > 9) value = value.substring(0, 9);
+        
+        if (value.length > 2) {
+          value = value.replace(/(\d{2})(\d{3})(\d{3})(\d{1})/, '$1.$2.$3-$4');
+        } else if (value.length > 0) {
+          value = value.replace(/(\d{0,2})/, '$1');
+        }
+        
+        e.target.value = value;
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      aplicarMascaraCPF(document.getElementById('cpf'));
+      aplicarMascaraRG(document.getElementById('rg'));
+
+      aplicarMascaraCPF(document.getElementById('professionalCpf'));
+      aplicarMascaraRG(document.getElementById('professionalRg'));
+
+      const userType = sessionStorage.getItem('userType');
+      if (userType === 'profissional') {
+        window.location.href = "profissional-dashboard.html";
+      }
+    });
+  </script>
 </body>
 </html>
