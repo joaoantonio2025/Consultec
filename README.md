@@ -12,9 +12,9 @@ Sistema web para agendamento de consultas médicas desenvolvido com HTML, CSS, J
 
 ## 🛠️ Tecnologias Utilizadas
 
-- HTML5
-- CSS3 (Bootstrap 5.3)
-- JavaScript (ES6+)
+- HTML
+- CSS (Bootstrap 5.3)
+- JavaScript 
 - Bootstrap Icons
 
 ## 📁 Estrutura do Projeto
