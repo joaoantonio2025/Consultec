@@ -14,16 +14,15 @@
   body {
     margin: 0;
     font-family: 'Segoe UI', sans-serif;
-    background: #ffffff;
+    background: var(--bg-light);
     color: var(--text-dark);
   }
-  
   .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 15px 40px;
-    background: #029680;
+    background: #fff;
     border-bottom: 1px solid #eee;
     position: sticky;
     top: 0;
@@ -48,11 +47,11 @@
     border-radius: 8px;
   }
   .hero {
-    background: #029680;
-    padding: 15px 750px;
+    background: white;
+    padding: 60px 40px;
     max-width: 800px;
     width: 90%;
-    margin: 0px auto; 
+    margin: 100px auto; 
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     text-align: center;
@@ -60,19 +59,19 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 75vh; 
+    min-height: 60vh; 
   }
 
   .hero h1 {
     font-weight: 800;
-    font-size: 3.4rem;
+    font-size: 2.8rem;
     max-width: 600px;
     margin-bottom: 15px;
     color: var(--text-dark);
   }
   .hero p {
     max-width: 550px;
-    font-size: 1.4rem;
+    font-size: 1.1rem;
     color: var(--text-medium);
     margin-bottom: 30px;
   }
@@ -102,7 +101,7 @@
     transition: background 0.3s ease;
   }
   .search-box button:hover {
-    background: #1339b7;
+    background: #1e40af;
   }
   .profissionais {
     max-width: 1200px;
@@ -289,104 +288,13 @@
       font-size: 0.9rem;
     }
   }
-
-  /* Só a área da hero */
-.hero h1,
-.hero p {
-  color: #fff !important;  /* força branco apenas aqui */
-}
-
-/* (Opcional) deixar a navbar branca também, sem afetar o restante */
-.navbar .logo,
-.navbar nav a {
-  color: #fff !important;
-}
-
-/* ========================
-   CONTROLES DE AJUSTE
-   ======================== */
-:root {
-  --hero-img-zoom: 1.4;   /* 🔍 Zoom da imagem (1 = normal, 1.2 = 20% maior, 0.9 = menor) */
-  --hero-img-offset-y: 40px; /* ⬆️⬇️ Move a imagem verticalmente (positivo = para baixo, negativo = para cima) */
-}
-
-/* ========================
-   ESTILOS PRINCIPAIS
-   ======================== */
-.hero {
-  background: #029680;
-  padding: 80px 750;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 75vh;
-}
-
-.hero-content {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  max-width: 1300px;
-  width: 100%;
-  gap: 100px;
-  padding: 0 100px;
-}
-
-.hero-text {
-  flex: 1;
-  color: #fff;
-  text-align: left;
-}
-
-.hero-image {
-  flex: 1;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-}
-
-/* === Imagem principal === */
-.hero-image img {
-  width: 400px;
-  height: auto;
-  border: none;
-  border-radius: 0;
-  box-shadow: none;
-  object-fit: contain;
-
-  /* 💡 Controle de zoom e posição */
-  transform: scale(var(--hero-img-zoom)) translateY(var(--hero-img-offset-y));
-  transition: transform 0.3s ease;
-}
-
-/* Responsivo */
-@media (max-width: 900px) {
-  .hero-content {
-    flex-direction: column;
-    text-align: center;
-    gap: 30px;
-    padding: 0 40px;
-  }
-
-  .hero-image {
-    justify-content: center;
-  }
-
-  .hero-image img {
-    width: 70%;
-    max-width: 320px;
-    transform: scale(1) translateY(0);
-  }
-}
-
-
 </style>
 </head>
 <body>
   <header class="navbar">
-    <a href="index.html" class="logo">⚕️Consultec</a>
+    <a href="index.html" class="logo">Consultec</a>
     <nav>
-      <a href="#" class="highlight">Home</a>
+      <a href="#" class="highlight">Início</a>
       <a href="#profissionais">Profissionais</a>
       <a href="especialidades.html">Especialidades</a>
       <a href="#">Contato</a>
@@ -395,32 +303,22 @@
   </header>
   
   <section class="hero">
-  <div class="hero-content">
-    <div class="hero-text">
-      <h1>Encontre e agende sua consulta</h1>
-      <p>Sua saúde em primeiro lugar. Agende consultas com profissionais qualificados de forma rápida e segura.</p>
-      <div class="search-box">
-        <select id="filterSpecialty">
-          <option value="">Especialidade</option>
-          <option>Cardiologia</option>
-          <option>Dermatologia</option>
-          <option>Ortopedia</option>
-          <option>Pediatria</option>
-          <option>Neurologia</option>
-          <option>Oftalmologia</option>
-        </select>
-        <input type="text" id="filterCity" placeholder="Cidade, Estado" />
-        <button class="btn" onclick="filterDoctors()">Buscar</button>
-      </div>
+    <h1>Encontre e agende sua consulta</h1>
+    <p>Sua saúde em primeiro lugar. Agende consultas com profissionais qualificados de forma rápida e segura.</p>
+    <div class="search-box">
+      <select id="filterSpecialty">
+        <option value="">Especialidade</option>
+        <option>Cardiologia</option>
+        <option>Dermatologia</option>
+        <option>Ortopedia</option>
+        <option>Pediatria</option>
+        <option>Neurologia</option>
+        <option>Oftalmologia</option>
+      </select>
+      <input type="text" id="filterCity" placeholder="Cidade, Estado" />
+      <button class="btn" onclick="filterDoctors()">Buscar</button>
     </div>
-    
-    <!-- Imagem adicionada -->
-    <div class="hero-image">
-      <img src="img/medico_fundosefundo.png" alt="Consulta médica" />
-    </div>
-  </div>
-</section>
-
+  </section>
   
   <section class="profissionais" id="profissionais">
     <h2>Profissionais em destaque</h2>
@@ -450,9 +348,9 @@
     <form id="scheduleForm">
       <label for="date">Data:</label>
       <input type="date" id="date" required />
-      <label for="startTime">Horário Início:</label>
+      <label for="startTime">Horário de Início:</label>
       <input type="time" id="startTime" required />
-      <label for="endTime">Horário Fim:</label>
+      <label for="endTime">Horário de Término:</label>
       <input type="time" id="endTime" required />
       <button type="submit" class="btn">Cadastrar Horário</button>
     </form>
@@ -471,27 +369,27 @@
     <form id="appointmentForm">
       <label for="doctor">Profissional:</label>
       <select id="doctor" required>
-        <option value="">Selecione</option>
+        <option value="">Selecione um profissional</option>
       </select>
-      <label for="appointmentDate">Data:</label>
+      <label for="appointmentDate">Data da Consulta:</label>
       <input type="date" id="appointmentDate" required />
-      <label for="appointmentTime">Horário:</label>
+      <label for="appointmentTime">Horário da Consulta:</label>
       <select id="appointmentTime" required>
-        <option value="">Selecione um horário</option>
+        <option value="">Selecione um horário disponível</option>
       </select>
-      <button type="submit" class="btn">Marcar Consulta</button>
+      <button type="submit" class="btn">Confirmar Agendamento</button>
     </form>
     <div id="appointmentResult"></div>
   </section>
 
 <script>
   const doctors = [
-    {name: "Dr. Carlos Monteiro", specialty: "Cardiologia", city: "São Paulo, SP", photo:"https://randomuser.me/api/portraits/men/10.jpg"},
-    {name: "Dra. Sofia Silva", specialty: "Dermatologia", city: "Rio de Janeiro, RJ", photo:"https://randomuser.me/api/portraits/women/20.jpg"},
-    {name: "Dr. Roberto Lima", specialty: "Ortopedia", city: "Belo Horizonte, MG", photo:"https://randomuser.me/api/portraits/men/30.jpg"},
-    {name: "Dra. Juliana Faria", specialty: "Pediatria", city: "Porto Alegre, RS", photo:"https://randomuser.me/api/portraits/women/40.jpg"},
-    {name: "Dra. Ana Costa", specialty: "Cardiologia", city: "Rio de Janeiro, RJ", photo:"https://randomuser.me/api/portraits/women/15.jpg"},
-    {name: "Dr. Marcos Oliveira", specialty: "Dermatologia", city: "Belo Horizonte, MG", photo:"https://randomuser.me/api/portraits/men/25.jpg"}
+    {name: "Dr. Carlos Monteiro", specialty: "Cardiologia", city: "São Paulo, SP", photo:"https://images.pexels.com/photos/5327914/pexels-photo-5327914.jpeg"},
+    {name: "Dra. Sofia Silva", specialty: "Dermatologia", city: "Rio de Janeiro, RJ", photo:"https://images.pexels.com/photos/5069589/pexels-photo-5069589.jpeg"},
+    {name: "Dr. Roberto Lima", specialty: "Ortopedia", city: "Belo Horizonte, MG", photo:"https://surgpli.com/wp-content/uploads/2023/03/AdobeStock_541200278.jpg"},
+    {name: "Dra. Juliana Faria", specialty: "Pediatria", city: "Porto Alegre, RS", photo:"https://freerangestock.com/sample/146000/young-pediatrician-doctor-and-child-patient.jpg"},
+    {name: "Dr. Analdo Costa", specialty: "Cardiologia", city: "Rio de Janeiro, RJ", photo:"https://st2.depositphotos.com/1051355/7204/i/450/depositphotos_72042723-stock-photo-doctor-with-stethoscope-and-heart.jpg"},
+    {name: "Dr. Marcos Oliveira", specialty: "Dermatologia", city: "Belo Horizonte, MG", photo:"https://s3.ap-southeast-2.amazonaws.com/cdn.basscoastskindoctors.com.au/wp-content/uploads/2021/12/16111303/Skin-specialist-vs-skin-doctor-whats-the-difference-HERO.jpg"}
   ];
 
   let schedules = [];
@@ -563,7 +461,7 @@
   function renderSchedules() {
     const container = document.getElementById("scheduleList");
     if (schedules.length === 0) {
-      container.innerHTML = "<p>Nenhum horário cadastrado.</p>";
+      container.innerHTML = "<p>Nenhum horário cadastrado ainda.</p>";
       return;
     }
     container.innerHTML = "<h3>Horários Cadastrados:</h3><ul>" +
@@ -588,10 +486,10 @@
   document.getElementById("appointmentDate").addEventListener("change", () => {
     const selectedDate = document.getElementById("appointmentDate").value;
     const timeSelect = document.getElementById("appointmentTime");
-    timeSelect.innerHTML = "<option value=''>Selecione um horário</option>";
+    timeSelect.innerHTML = "<option value=''>Selecione um horário disponível</option>";
     const availableSchedules = schedules.filter(sch => sch.date === selectedDate);
     if(availableSchedules.length === 0) {
-      timeSelect.innerHTML += "<option disabled>Sem horários disponíveis</option>";
+      timeSelect.innerHTML += "<option disabled>Nenhum horário disponível para esta data</option>";
       return;
     }
     availableSchedules.forEach(sch => {
@@ -603,7 +501,7 @@
   });
 
   document.getElementById("doctor").innerHTML = 
-    '<option value="">Selecione</option>' +
+    '<option value="">Selecione um profissional</option>' +
     doctors.map(doc => `<option value="${doc.name}">${doc.name} - ${doc.specialty}</option>`).join("");
 
   document.getElementById("appointmentForm").addEventListener("submit", e => {
@@ -616,15 +514,22 @@
       return;
     }
     document.getElementById("appointmentResult").innerHTML = 
-      `<p>Consulta marcada com <strong>${doctor}</strong> no dia <strong>${date}</strong> às <strong>${time}</strong>.</p>`;
+      `<p style="color: var(--primary-blue); font-weight: 700;">✅ Consulta marcada com <strong>${doctor}</strong> no dia <strong>${date}</strong> às <strong>${time}</strong>.</p>`;
     e.target.reset();
-    document.getElementById("appointmentTime").innerHTML = "<option value=''>Selecione um horário</option>";
+    document.getElementById("appointmentTime").innerHTML = "<option value=''>Selecione um horário disponível</option>";
   });
+
+  function closeModal() {
+    document.getElementById("modal").style.display = "none";
+  }
 
   document.addEventListener('DOMContentLoaded', function() {
     renderDoctors(doctors);
     renderSchedules();
     checkRedirectData();
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('date').min = today;
+    document.getElementById('appointmentDate').min = today;
   });
 </script>
 </body>
