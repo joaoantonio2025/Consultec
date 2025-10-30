@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Consultec - Dashboard do Paciente</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {
+      --primary-blue: #2563eb;
+      --text-dark: #333;
+      --text-medium: #555;
+      --bg-light: #f7f9fc;
+    }
+    body {
+      background: var(--bg-light);
+      color: var(--text-dark);
+    }
+    .sidebar {
+      background: white;
+      min-height: 100vh;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
+    }
+    .sidebar .nav-link {
+      color: var(--text-medium);
+      padding: 12px 20px;
+      border-radius: 8px;
+      margin-bottom: 5px;
+    }
+    .sidebar .nav-link:hover, .sidebar .nav-link.active {
+      background-color: rgba(37, 99, 235, 0.1);
+      color: var(--primary-blue);
+    }
+    .sidebar .nav-link i {
+      margin-right: 10px;
+      width: 20px;
+      text-align: center;
+    }
+    .dashboard-card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      padding: 20px;
+      margin-bottom: 20px;
+      transition: transform 0.3s ease;
+    }
+    .dashboard-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+    }
+    .appointment-card {
+      border-left: 4px solid var(--primary-blue);
+    }
+    .appointment-card.upcoming {
+      border-left-color: #10b981;
+    }
+    .appointment-card.past {
+      border-left-color: #6b7280;
+    }
+    .appointment-card.cancelled {
+      border-left-color: #ef4444;
+    }
+    .btn-primary {
+      background-color: var(--primary-blue);
+      border-color: var(--primary-blue);
+    }
+    .btn-primary:hover {
+      background-color: #1e40af;
+      border-color: #1e40af;
+    }
+    .notification-badge {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background-color: #ef4444;
+      color: white;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      font-size: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .profile-img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .favorite-doctor {
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 15px;
+      transition: all 0.3s ease;
+    }
+    .favorite-doctor:hover {
+      border-color: var(--primary-blue);
+      box-shadow: 0 4px 8px rgba(37, 99, 235, 0.1);
+    }
+    .reminder-card {
+      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+      color: white;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    .status-badge {
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .status-scheduled {
+      background-color: #dbeafe;
+      color: #1e40af;
+    }
+    .status-completed {
+      background-color: #dcfce7;
+      color: #166534;
+    }
+    .status-cancelled {
+      background-color: #fee2e2;
+      color: #991b1b;
+    }
+  </style>
+</head>
+<body>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-3 col-lg-2 sidebar p-0">
+        <div class="d-flex flex-column flex-shrink-0 p-3">
+          <a href="index.html" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-decoration-none">
+            <span class="fs-4 fw-bold text-primary">Consultec</span>
+          </a>
+          <hr>
+          <ul class="nav nav-pills flex-column mb-auto">
+            <li class="nav-item">
+              <a href="#" class="nav-link active" aria-current="page">
+                <i class="bi bi-house-door"></i>
+                Dashboard
+              </a>
+            </li>
+            <li>
+              <a href="#" class="nav-link">
+                <i class="bi bi-calendar-check"></i>
+                Agendamentos
+              </a>
+            </li>
+            <li>
+              <a href="#" class="nav-link">
+                <i class="bi bi-heart"></i>
+                Favoritos
+              </a>
+            </li>
+            <li>
+              <a href="#" class="nav-link">
+                <i class="bi bi-clock-history"></i>
+                Histórico
+              </a>
+            </li>
+            <li>
+              <a href="#" class="nav-link">
+                <i class="bi bi-file-medical"></i>
+                Documentos
+              </a>
+            </li>
+            <li>
+              <a href="#" class="nav-link">
+                <i class="bi bi-gear"></i>
+                Configurações
+              </a>
+            </li>
+          </ul>
+          <hr>
+          <div class="dropdown">
+            <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+              <img src="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg" alt="User" width="32" height="32" class="rounded-circle me-2">
+              <strong>Maria Silva</strong>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+              <li><a class="dropdown-item" href="#">Perfil</a></li>
+              <li><a class="dropdown-item" href="#">Configurações</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="#">Sair</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-9 col-lg-10 ms-sm-auto px-md-4 py-4">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-4 border-bottom">
+          <h1 class="h2">Dashboard do Paciente</h1>
+          <div class="btn-toolbar mb-2 mb-md-0">
+            <div class="btn-group me-2">
+              <button type="button" class="btn btn-sm btn-outline-primary">Hoje</button>
+              <button type="button" class="btn btn-sm btn-outline-primary">Semana</button>
+              <button type="button" class="btn btn-sm btn-outline-primary">Mês</button>
+            </div>
+            <div class="position-relative">
+              <button type="button" class="btn btn-sm btn-outline-secondary position-relative">
+                <i class="bi bi-bell"></i>
+                <span class="notification-badge">3</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mb-4">
+          <div class="col-xl-3 col-md-6 mb-4">
+            <div class="dashboard-card">
+              <div class="d-flex align-items-center">
+                <div class="flex-shrink-0 bg-primary bg-opacity-10 p-3 rounded me-3">
+                  <i class="bi bi-calendar-check text-primary fs-4"></i>
+                </div>
+                <div class="flex-grow-1">
+                  <h5 class="mb-0">3</h5>
+                  <p class="text-muted mb-0">Consultas Agendadas</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-3 col-md-6 mb-4">
+            <div class="dashboard-card">
+              <div class="d-flex align-items-center">
+                <div class="flex-shrink-0 bg-success bg-opacity-10 p-3 rounded me-3">
+                  <i class="bi bi-heart text-success fs-4"></i>
+                </div>
+                <div class="flex-grow-1">
+                  <h5 class="mb-0">5</h5>
+                  <p class="text-muted mb-0">Profissionais Favoritos</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-3 col-md-6 mb-4">
+            <div class="dashboard-card">
+              <div class="d-flex align-items-center">
+                <div class="flex-shrink-0 bg-info bg-opacity-10 p-3 rounded me-3">
+                  <i class="bi bi-file-medical text-info fs-4"></i>
+                </div>
+                <div class="flex-grow-1">
+                  <h5 class="mb-0">12</h5>
+                  <p class="text-muted mb-0">Consultas Realizadas</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-3 col-md-6 mb-4">
+            <div class="dashboard-card">
+              <div class="d-flex align-items-center">
+                <div class="flex-shrink-0 bg-warning bg-opacity-10 p-3 rounded me-3">
+                  <i class="bi bi-clock text-warning fs-4"></i>
+                </div>
+                <div class="flex-grow-1">
+                  <h5 class="mb-0">2</h5>
+                  <p class="text-muted mb-0">Lembretes Ativos</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-8">
+            <div class="dashboard-card mb-4">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="mb-0">Próximas Consultas</h4>
+                <a href="#" class="btn btn-sm btn-outline-primary">Ver Todas</a>
+              </div>
+              
+              <div class="appointment-card p-3 mb-3 upcoming">
+                <div class="d-flex justify-content-between align-items-start">
+                  <div>
+                    <h5 class="mb-1">Dra. Sofia Silva</h5>
+                    <p class="mb-1 text-muted">Dermatologia</p>
+                    <p class="mb-1"><i class="bi bi-calendar-event me-2"></i>15 Nov 2023, 14:30</p>
+                    <p class="mb-0"><i class="bi bi-geo-alt me-2"></i>Rua das Flores, 123 - Rio de Janeiro, RJ</p>
+                  </div>
+                  <div class="d-flex flex-column align-items-end">
+                    <span class="status-badge status-scheduled mb-2">Agendada</span>
+                    <div class="btn-group btn-group-sm">
+                      <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#rescheduleModal">Remarcar</button>
+                      <button class="btn btn-outline-danger" onclick="cancelAppointment(1)">Cancelar</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="appointment-card p-3 mb-3 upcoming">
+                <div class="d-flex justify-content-between align-items-start">
+                  <div>
+                    <h5 class="mb-1">Dr. Carlos Monteiro</h5>
+                    <p class="mb-1 text-muted">Cardiologia</p>
+                    <p class="mb-1"><i class="bi bi-calendar-event me-2"></i>20 Nov 2023, 10:00</p>
+                    <p class="mb-0"><i class="bi bi-geo-alt me-2"></i>Av. Paulista, 1000 - São Paulo, SP</p>
+                  </div>
+                  <div class="d-flex flex-column align-items-end">
+                    <span class="status-badge status-scheduled mb-2">Agendada</span>
+                    <div class="btn-group btn-group-sm">
+                      <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#rescheduleModal">Remarcar</button>
+                      <button class="btn btn-outline-danger" onclick="cancelAppointment(2)">Cancelar</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="appointment-card p-3 mb-3">
+                <div class="d-flex justify-content-between align-items-start">
+                  <div>
+                    <h5 class="mb-1">Dr. Roberto Lima</h5>
+                    <p class="mb-1 text-muted">Ortopedia</p>
+                    <p class="mb-1"><i class="bi bi-calendar-event me-2"></i>25 Nov 2023, 16:15</p>
+                    <p class="mb-0"><i class="bi bi-geo-alt me-2"></i>Rua da Bahia, 500 - Belo Horizonte, MG</p>
+                  </div>
+                  <div class="d-flex flex-column align-items-end">
+                    <span class="status-badge status-scheduled mb-2">Agendada</span>
+                    <div class="btn-group btn-group-sm">
+                      <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#rescheduleModal">Remarcar</button>
+                      <button class="btn btn-outline-danger" onclick="cancelAppointment(3)">Cancelar</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="dashboard-card mb-4">
+              <h4 class="mb-3">Consultas por Especialidade</h4>
+              <div class="chart-container" style="position: relative; height:300px;">
+                <canvas id="specialtyChart"></canvas>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="col-lg-4">
+            <div class="reminder-card">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="mb-0 text-white">Lembretes</h4>
+                <i class="bi bi-bell fs-4"></i>
+              </div>
+              <div class="mb-3">
+                <p class="mb-1"><strong>Consulta com Dra. Sofia Silva</strong></p>
+                <p class="mb-0">15 Nov 2023, 14:30 - Dermatologia</p>
+                <small>Faltam 2 dias</small>
+              </div>
+              <div>
+                <p class="mb-1"><strong>Retorno com Dr. Carlos Monteiro</strong></p>
+                <p class="mb-0">20 Nov 2023, 10:00 - Cardiologia</p>
+                <small>Faltam 7 dias</small>
+              </div>
+            </div>
+
+            <div class="dashboard-card mb-4">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="mb-0">Profissionais Favoritos</h4>
+                <a href="#" class="btn btn-sm btn-outline-primary">Ver Todos</a>
+              </div>
+              
+              <div class="favorite-doctor">
+                <div class="d-flex align-items-center">
+                  <img src="https://images.pexels.com/photos/5327914/pexels-photo-5327914.jpeg" alt="Dr. Carlos" class="profile-img me-3">
+                  <div class="flex-grow-1">
+                    <h6 class="mb-0">Dr. Carlos Monteiro</h6>
+                    <p class="text-muted mb-0">Cardiologia</p>
+                  </div>
+                  <button class="btn btn-sm btn-outline-danger">
+                    <i class="bi bi-heart-fill"></i>
+                  </button>
+                </div>
+              </div>
+              
+              <div class="favorite-doctor">
+                <div class="d-flex align-items-center">
+                  <img src="https://images.pexels.com/photos/5069589/pexels-photo-5069589.jpeg" alt="Dra. Sofia" class="profile-img me-3">
+                  <div class="flex-grow-1">
+                    <h6 class="mb-0">Dra. Sofia Silva</h6>
+                    <p class="text-muted mb-0">Dermatologia</p>
+                  </div>
+                  <button class="btn btn-sm btn-outline-danger">
+                    <i class="bi bi-heart-fill"></i>
+                  </button>
+                </div>
+              </div>
+              
+              <div class="favorite-doctor">
+                <div class="d-flex align-items-center">
+                  <img src="https://surgpli.com/wp-content/uploads/2023/03/AdobeStock_541200278.jpg" alt="Dr. Roberto" class="profile-img me-3">
+                  <div class="flex-grow-1">
+                    <h6 class="mb-0">Dr. Roberto Lima</h6>
+                    <p class="text-muted mb-0">Ortopedia</p>
+                  </div>
+                  <button class="btn btn-sm btn-outline-danger">
+                    <i class="bi bi-heart-fill"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="dashboard-card">
+              <h4 class="mb-3">Histórico Recente</h4>
+              
+              <div class="appointment-card p-3 mb-3 past">
+                <div class="d-flex justify-content-between align-items-start">
+                  <div>
+                    <h6 class="mb-1">Dra. Juliana Faria</h6>
+                    <p class="mb-1 text-muted">Pediatria</p>
+                    <p class="mb-0"><i class="bi bi-calendar-event me-2"></i>05 Nov 2023, 09:00</p>
+                  </div>
+                  <span class="status-badge status-completed">Concluída</span>
+                </div>
+              </div>
+              
+              <div class="appointment-card p-3 mb-3 past">
+                <div class="d-flex justify-content-between align-items-start">
+                  <div>
+                    <h6 class="mb-1">Dr. Marcos Oliveira</h6>
+                    <p class="mb-1 text-muted">Dermatologia</p>
+                    <p class="mb-0"><i class="bi bi-calendar-event me-2"></i>28 Out 2023, 15:30</p>
+                  </div>
+                  <span class="status-badge status-completed">Concluída</span>
+                </div>
+              </div>
+              
+              <div class="appointment-card p-3 past">
+                <div class="d-flex justify-content-between align-items-start">
+                  <div>
+                    <h6 class="mb-1">Dr. Analdo Costa</h6>
+                    <p class="mb-1 text-muted">Cardiologia</p>
+                    <p class="mb-0"><i class="bi bi-calendar-event me-2"></i>15 Out 2023, 11:00</p>
+                  </div>
+                  <span class="status-badge status-cancelled">Cancelada</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="rescheduleModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Remarcar Consulta</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="rescheduleForm">
+            <div class="mb-3">
+              <label for="rescheduleDate" class="form-label">Nova Data</label>
+              <input type="date" class="form-control" id="rescheduleDate" required>
+            </div>
+            <div class="mb-3">
+              <label for="rescheduleTime" class="form-label">Novo Horário</label>
+              <select class="form-select" id="rescheduleTime" required>
+                <option value="">Selecione um horário</option>
+                <option value="09:00">09:00</option>
+                <option value="10:00">10:00</option>
+                <option value="11:00">11:00</option>
+                <option value="14:00">14:00</option>
+                <option value="15:00">15:00</option>
+                <option value="16:00">16:00</option>
+              </select>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary" onclick="rescheduleAppointment()">Confirmar Remarcação</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <script>
+    const specialtyData = {
+      labels: ['Cardiologia', 'Dermatologia', 'Ortopedia', 'Pediatria', 'Neurologia', 'Oftalmologia'],
+      datasets: [{
+        label: 'Consultas Realizadas',
+        data: [4, 3, 2, 1, 1, 1],
+        backgroundColor: [
+          'rgba(37, 99, 235, 0.7)',
+          'rgba(16, 185, 129, 0.7)',
+          'rgba(245, 158, 11, 0.7)',
+          'rgba(139, 92, 246, 0.7)',
+          'rgba(14, 165, 233, 0.7)',
+          'rgba(236, 72, 153, 0.7)'
+        ],
+        borderColor: [
+          'rgb(37, 99, 235)',
+          'rgb(16, 185, 129)',
+          'rgb(245, 158, 11)',
+          'rgb(139, 92, 246)',
+          'rgb(14, 165, 233)',
+          'rgb(236, 72, 153)'
+        ],
+        borderWidth: 1
+      }]
+    };
+
+    const config = {
+      type: 'doughnut',
+      data: specialtyData,
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'bottom',
+          },
+          title: {
+            display: false
+          }
+        }
+      },
+    };
+
+    window.onload = function() {
+      const ctx = document.getElementById('specialtyChart').getContext('2d');
+      new Chart(ctx, config);
+
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById('rescheduleDate').min = today;
+    };
+
+    function cancelAppointment(id) {
+      if (confirm('Tem certeza que deseja cancelar esta consulta?')) {
+        alert('Consulta cancelada com sucesso!');
+      }
+    }
+
+    function rescheduleAppointment() {
+      const date = document.getElementById('rescheduleDate').value;
+      const time = document.getElementById('rescheduleTime').value;
+      
+      if (!date || !time) {
+        alert('Por favor, selecione uma data e horário válidos.');
+        return;
+      }
+      
+      alert(`Consulta remarcada para ${date} às ${time}`);
+      document.getElementById('rescheduleForm').reset();
+      const modal = bootstrap.Modal.getInstance(document.getElementById('rescheduleModal'));
+      modal.hide();
+    }
+  </script>
+</body>
+</html>

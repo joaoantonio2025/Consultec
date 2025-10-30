@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Consultec - Analytics do Sistema</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {
+      --primary-blue: #2563eb;
+      --text-dark: #333;
+      --text-medium: #555;
+      --bg-light: #f7f9fc;
+    }
+    body {
+      background: var(--bg-light);
+      color: var(--text-dark);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .navbar-brand {
+      font-weight: bold;
+      font-size: 1.5rem;
+    }
+    .sidebar {
+      background: white;
+      min-height: 100vh;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
+    }
+    .sidebar .nav-link {
+      color: var(--text-medium);
+      padding: 12px 20px;
+      border-radius: 8px;
+      margin-bottom: 5px;
+    }
+    .sidebar .nav-link:hover, .sidebar .nav-link.active {
+      background-color: rgba(37, 99, 235, 0.1);
+      color: var(--primary-blue);
+    }
+    .sidebar .nav-link i {
+      margin-right: 10px;
+      width: 20px;
+      text-align: center;
+    }
+    .dashboard-card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      padding: 20px;
+      margin-bottom: 20px;
+      transition: transform 0.3s ease;
+    }
+    .dashboard-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+    }
+    .stat-card {
+      text-align: center;
+      padding: 25px 15px;
+    }
+    .stat-card .value {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin: 10px 0;
+    }
+    .stat-card .label {
+      color: var(--text-medium);
+      font-size: 0.9rem;
+    }
+    .stat-card .trend {
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+    .trend-up {
+      color: #10b981;
+    }
+    .trend-down {
+      color: #ef4444;
+    }
+    .chart-container {
+      position: relative;
+      height: 300px;
+    }
+    .device-stats {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 20px;
+    }
+    .device-item {
+      text-align: center;
+    }
+    .device-icon {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+    .device-percentage {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+    .device-label {
+      color: var(--text-medium);
+      font-size: 0.9rem;
+    }
+    .peak-hours {
+      margin-top: 20px;
+    }
+    .hour-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .hour-item:last-child {
+      border-bottom: none;
+    }
+    .hour-time {
+      font-weight: 600;
+    }
+    .hour-count {
+      color: var(--primary-blue);
+      font-weight: 600;
+    }
+    .filter-bar {
+      background: white;
+      border-radius: 12px;
+      padding: 15px 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    .btn-primary {
+      background-color: var(--primary-blue);
+      border-color: var(--primary-blue);
+    }
+    .btn-primary:hover {
+      background-color: #1e40af;
+      border-color: #1e40af;
+    }
+    .table th {
+      border-top: none;
+      font-weight: 600;
+      color: var(--text-medium);
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top shadow-sm">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="index.html">Consultec</a>
+      
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mx-auto">
+          <li class="nav-item">
+            <a class="nav-link fw-semibold" href="index.html">Início</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link fw-semibold" href="dashboard-paciente.html">Paciente</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active fw-semibold" href="dashboard-sistema.html">Analytics</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link fw-semibold" href="dashboard-feedback.html">Feedback</a>
+          </li>
+        </ul>
+        
+        <div class="d-flex">
+          <a href="#" class="btn btn-outline-primary me-2">Relatórios</a>
+          <a href="#" class="btn btn-primary">Admin</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-3 col-lg-2 sidebar p-0">
+        <div class="d-flex flex-column flex-shrink-0 p-3">
+          <a href="dashboard-sistema.html" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-decoration-none">
+            <span class="fs-4 fw-bold text-primary">Analytics</span>
+          </a>
+          <hr>
+          <ul class="nav nav-pills flex-column mb-auto">
+            <li class="nav-item">
+              <a href="#" class="nav-link active" aria-current="page">
+                <i class="bi bi-speedometer2"></i>
+                Dashboard
+              </a>
+            </li>
+            <li>
+              <a href="#" class="nav-link">
+                <i class="bi bi-calendar-check"></i>
+                Agendamentos
+              </a>
+            </li>
+            <li>
+              <a href="#" class="nav-link">
+                <i class="bi bi-people"></i>
+                Usuários
+              </a>
+            </li>
+            <li>
+              <a href="#" class="nav-link">
+                <i class="bi bi-graph-up"></i>
+                Desempenho
+              </a>
+            </li>
+            <li>
+              <a href="#" class="nav-link">
+                <i class="bi bi-device-phone"></i>
+                Dispositivos
+              </a>
+            </li>
+            <li>
+              <a href="#" class="nav-link">
+                <i class="bi bi-clock-history"></i>
+                Horários
+              </a>
+            </li>
+          </ul>
+          <hr>
+          <div class="dropdown">
+            <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+              <img src="https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg" alt="Admin" width="32" height="32" class="rounded-circle me-2">
+              <strong>Admin</strong>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+              <li><a class="dropdown-item" href="#">Configurações</a></li>
+              <li><a class="dropdown-item" href="#">Perfil</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="#">Sair</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-9 col-lg-10 ms-sm-auto px-md-4 py-4">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-4 border-bottom">
+          <h1 class="h2">Dashboard de Analytics</h1>
+          <div class="btn-toolbar mb-2 mb-md-0">
+            <div class="btn-group me-2">
+              <button type="button" class="btn btn-sm btn-outline-primary active" data-range="today">Hoje</button>
+              <button type="button" class="btn btn-sm btn-outline-primary" data-range="week">Semana</button>
+              <button type="button" class="btn btn-sm btn-outline-primary" data-range="month">Mês</button>
+            </div>
+            <button type="button" class="btn btn-sm btn-outline-secondary">
+              <i class="bi bi-download me-1"></i> Exportar
+            </button>
+          </div>
+        </div>
+
+        <div class="filter-bar">
+          <div class="row align-items-center">
+            <div class="col-md-3">
+              <label for="dateRange" class="form-label">Período</label>
+              <select class="form-select" id="dateRange">
+                <option value="7">Últimos 7 dias</option>
+                <option value="30" selected>Últimos 30 dias</option>
+                <option value="90">Últimos 3 meses</option>
+                <option value="365">Último ano</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <label for="specialtyFilter" class="form-label">Especialidade</label>
+              <select class="form-select" id="specialtyFilter">
+                <option value="all" selected>Todas</option>
+                <option value="cardio">Cardiologia</option>
+                <option value="derma">Dermatologia</option>
+                <option value="orto">Ortopedia</option>
+                <option value="ped">Pediatria</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <label for="regionFilter" class="form-label">Região</label>
+              <select class="form-select" id="regionFilter">
+                <option value="all" selected>Todas</option>
+                <option value="sp">São Paulo</option>
+                <option value="rj">Rio de Janeiro</option>
+                <option value="mg">Minas Gerais</option>
+                <option value="rs">Rio Grande do Sul</option>
+              </select>
+            </div>
+            <div class="col-md-3 d-flex align-items-end">
+              <button class="btn btn-primary w-100" onclick="applyFilters()">
+                <i class="bi bi-funnel me-1"></i> Aplicar Filtros
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mb-4">
+          <div class="col-xl-3 col-md-6 mb-4">
+            <div class="dashboard-card stat-card">
+              <div class="icon text-primary">
+                <i class="bi bi-calendar-check fs-1"></i>
+              </div>
+              <div class="value">87.5%</div>
+              <div class="label">Taxa de Sucesso no Agendamento</div>
+              <div class="trend trend-up">
+                <i class="bi bi-arrow-up-right me-1"></i> 2.3% vs período anterior
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-3 col-md-6 mb-4">
+            <div class="dashboard-card stat-card">
+              <div class="icon text-info">
+                <i class="bi bi-clock-history fs-1"></i>
+              </div>
+              <div class="value">4.2 min</div>
+              <div class="label">Tempo Médio de Navegação</div>
+              <div class="trend trend-up">
+                <i class="bi bi-arrow-up-right me-1"></i> 0.5 min vs período anterior
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-3 col-md-6 mb-4">
+            <div class="dashboard-card stat-card">
+              <div class="icon text-success">
+                <i class="bi bi-people fs-1"></i>
+              </div>
+              <div class="value">1,247</div>
+              <div class="label">Agendamentos Realizados</div>
+              <div class="trend trend-up">
+                <i class="bi bi-arrow-up-right me-1"></i> 12% vs período anterior
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-3 col-md-6 mb-4">
+            <div class="dashboard-card stat-card">
+              <div class="icon text-warning">
+                <i class="bi bi-x-circle fs-1"></i>
+              </div>
+              <div class="value">4.8%</div>
+              <div class="label">Taxa de Cancelamento</div>
+              <div class="trend trend-down">
+                <i class="bi bi-arrow-down-right me-1"></i> 1.2% vs período anterior
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-8">
+            <div class="dashboard-card mb-4">
+              <h4 class="mb-3">Agendamentos ao Longo do Tempo</h4>
+              <div class="chart-container">
+                <canvas id="bookingsChart"></canvas>
+              </div>
+            </div>
+
+            <div class="dashboard-card">
+              <h4 class="mb-3">Horários de Pico de Acessos</h4>
+              <div class="chart-container">
+                <canvas id="peakHoursChart"></canvas>
+              </div>
+              <div class="peak-hours">
+                <div class="hour-item">
+                  <span class="hour-time">09:00 - 10:00</span>
+                  <span class="hour-count">1,247 acessos</span>
+                </div>
+                <div class="hour-item">
+                  <span class="hour-time">14:00 - 15:00</span>
+                  <span class="hour-count">1,103 acessos</span>
+                </div>
+                <div class="hour-item">
+                  <span class="hour-time">19:00 - 20:00</span>
+                  <span class="hour-count">987 acessos</span>
+                </div>
+                <div class="hour-item">
+                  <span class="hour-time">11:00 - 12:00</span>
+                  <span class="hour-count">856 acessos</span>
+                </div>
+                <div class="hour-item">
+                  <span class="hour-time">16:00 - 17:00</span>
+                  <span class="hour-count">732 acessos</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4">
+            <div class="dashboard-card mb-4">
+              <h4 class="mb-3">Acesso por Dispositivo</h4>
+              <div class="chart-container">
+                <canvas id="deviceChart"></canvas>
+              </div>
+              <div class="device-stats">
+                <div class="device-item">
+                  <div class="device-icon text-primary">
+                    <i class="bi bi-phone"></i>
+                  </div>
+                  <div class="device-percentage">62%</div>
+                  <div class="device-label">Mobile</div>
+                </div>
+                <div class="device-item">
+                  <div class="device-icon text-info">
+                    <i class="bi bi-laptop"></i>
+                  </div>
+                  <div class="device-percentage">35%</div>
+                  <div class="device-label">Desktop</div>
+                </div>
+                <div class="device-item">
+                  <div class="device-icon text-warning">
+                    <i class="bi bi-tablet"></i>
+                  </div>
+                  <div class="device-percentage">3%</div>
+                  <div class="device-label">Tablet</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="dashboard-card mb-4">
+              <h4 class="mb-3">Taxas de Conversão</h4>
+              <div class="mb-3">
+                <div class="d-flex justify-content-between mb-1">
+                  <span>Visualização → Agendamento</span>
+                  <span>8.7%</span>
+                </div>
+                <div class="progress" style="height: 8px;">
+                  <div class="progress-bar bg-success" role="progressbar" style="width: 8.7%"></div>
+                </div>
+              </div>
+              <div class="mb-3">
+                <div class="d-flex justify-content-between mb-1">
+                  <span>Busca → Visualização</span>
+                  <span>24.3%</span>
+                </div>
+                <div class="progress" style="height: 8px;">
+                  <div class="progress-bar bg-info" role="progressbar" style="width: 24.3%"></div>
+                </div>
+              </div>
+              <div class="mb-3">
+                <div class="d-flex justify-content-between mb-1">
+                  <span>Página Inicial → Busca</span>
+                  <span>42.1%</span>
+                </div>
+                <div class="progress" style="height: 8px;">
+                  <div class="progress-bar bg-primary" role="progressbar" style="width: 42.1%"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="dashboard-card">
+              <h4 class="mb-3">Especialidades Mais Procuradas</h4>
+              <div class="table-responsive">
+                <table class="table table-borderless">
+                  <thead>
+                    <tr>
+                      <th>Especialidade</th>
+                      <th class="text-end">Agendamentos</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Cardiologia</td>
+                      <td class="text-end">287</td>
+                    </tr>
+                    <tr>
+                      <td>Dermatologia</td>
+                      <td class="text-end">243</td>
+                    </tr>
+                    <tr>
+                      <td>Ortopedia</td>
+                      <td class="text-end">198</td>
+                    </tr>
+                    <tr>
+                      <td>Pediatria</td>
+                      <td class="text-end">156</td>
+                    </tr>
+                    <tr>
+                      <td>Neurologia</td>
+                      <td class="text-end">132</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <script>
+    const bookingsData = {
+      labels: ['1 Nov', '2 Nov', '3 Nov', '4 Nov', '5 Nov', '6 Nov', '7 Nov', '8 Nov', '9 Nov', '10 Nov', '11 Nov', '12 Nov'],
+      datasets: [{
+        label: 'Agendamentos Realizados',
+        data: [45, 52, 38, 61, 55, 58, 63, 70, 65, 72, 68, 75],
+        borderColor: 'rgb(37, 99, 235)',
+        backgroundColor: 'rgba(37, 99, 235, 0.1)',
+        tension: 0.4,
+        fill: true
+      }, {
+        label: 'Agendamentos Cancelados',
+        data: [2, 3, 1, 4, 2, 3, 2, 4, 3, 2, 3, 4],
+        borderColor: 'rgb(239, 68, 68)',
+        backgroundColor: 'rgba(239, 68, 68, 0.1)',
+        tension: 0.4,
+        fill: true
+      }]
+    };
+
+    const peakHoursData = {
+      labels: ['00h', '02h', '04h', '06h', '08h', '10h', '12h', '14h', '16h', '18h', '20h', '22h'],
+      datasets: [{
+        label: 'Acessos por Hora',
+        data: [45, 32, 28, 120, 450, 780, 650, 820, 610, 720, 680, 420],
+        backgroundColor: 'rgba(37, 99, 235, 0.7)',
+        borderColor: 'rgb(37, 99, 235)',
+        borderWidth: 1
+      }]
+    };
+
+    const deviceData = {
+      labels: ['Mobile', 'Desktop', 'Tablet'],
+      datasets: [{
+        data: [62, 35, 3],
+        backgroundColor: [
+          'rgba(37, 99, 235, 0.7)',
+          'rgba(16, 185, 129, 0.7)',
+          'rgba(245, 158, 11, 0.7)'
+        ],
+        borderColor: [
+          'rgb(37, 99, 235)',
+          'rgb(16, 185, 129)',
+          'rgb(245, 158, 11)'
+        ],
+        borderWidth: 1
+      }]
+    };
+
+    const bookingsConfig = {
+      type: 'line',
+      data: bookingsData,
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+          title: {
+            display: false
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      },
+    };
+
+    const peakHoursConfig = {
+      type: 'bar',
+      data: peakHoursData,
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: false
+          },
+          title: {
+            display: false
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      },
+    };
+
+    const deviceConfig = {
+      type: 'doughnut',
+      data: deviceData,
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'bottom',
+          },
+          title: {
+            display: false
+          }
+        }
+      },
+    };
+
+    window.onload = function() {
+      const bookingsCtx = document.getElementById('bookingsChart').getContext('2d');
+      new Chart(bookingsCtx, bookingsConfig);
+      
+      const peakHoursCtx = document.getElementById('peakHoursChart').getContext('2d');
+      new Chart(peakHoursCtx, peakHoursConfig);
+      
+      const deviceCtx = document.getElementById('deviceChart').getContext('2d');
+      new Chart(deviceCtx, deviceConfig);
+
+      document.querySelectorAll('[data-range]').forEach(button => {
+        button.addEventListener('click', function() {
+          document.querySelectorAll('[data-range]').forEach(btn => {
+            btn.classList.remove('active');
+          });
+          this.classList.add('active');
+        });
+      });
+    };
+
+    function applyFilters() {
+      const dateRange = document.getElementById('dateRange').value;
+      const specialty = document.getElementById('specialtyFilter').value;
+      const region = document.getElementById('regionFilter').value;
+ 
+      console.log('Aplicando filtros:', { dateRange, specialty, region });
+      alert('Filtros aplicados com sucesso!');
+    }
+  </script>
+</body>
+</html>
