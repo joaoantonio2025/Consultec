@@ -109,3 +109,46 @@ Layout: Cards e componentes Bootstrap
 Responsivo: Mobile-first approach
 
 Ícones: Bootstrap Icons integrados
+
+
+API não conecta:
+Verificar se node server.js está rodando
+
+Confirmar porta 3000 livre
+
+Checar configurações CORS
+
+Erro de CORS no frontend:
+Verificar se cors() está habilitado no server.js
+
+Checar URLs das requisições fetch
+
+Dados não persistem:
+Os dados são em memória (reiniciam com o servidor)
+
+Para persistência, implementar banco de dados
+
+🚀 Próximas Implementações
+Integração com banco de dados (MySQL/PostgreSQL)
+
+Sistema de agendamento completo
+
+Painel administrativo
+
+Notificações por email
+
+Pagamentos online
+
+Histórico de consultas
+
+Avaliações de profissionais
+
+👥 Tipos de Usuário
+Pacientes - Buscar profissionais e agendar consultas
+
+Profissionais - Gerenciar horários e consultas
+
+Administradores - Gerenciar toda a plataforma
+
+📞 Suporte
+Para dúvidas ou sugestões, entre em contato com a equipe de desenvolvimento.
