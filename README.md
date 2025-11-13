@@ -46,3 +46,66 @@ projeto.consultec/
 │
 └── 📚 README.md # Documentação
 
+## ⚡ Como Executar o Projeto
+
+### 1. Backend (API)
+```bash
+# Navegar até a pasta do projeto
+cd projeto.consultec
+
+# Instalar dependências
+npm install express cors
+
+# Executar servidor
+node server.js
+
+A API estará disponível em: http://localhost:3000
+
+🔌 Endpoints da API
+GET / - Health check da API
+
+POST /usuarios - Cadastrar novo usuário
+
+POST /login - Autenticar usuário
+
+GET /usuarios - Listar usuários (apenas desenvolvimento)
+
+🎯 Fluxo do Sistema
+Para Pacientes:
+Cadastro → cadastro.html
+
+Login → login.html
+
+Buscar Profissionais → index.html
+
+Agendar Consulta → Formulário na página principal
+
+Para Profissionais:
+Cadastro → Modal no login.html
+
+Login → Área profissional
+
+Cadastrar Horários → Formulário na página principal
+
+🔐 Sistema de Autenticação
+Pacientes: Email, CPF, RG e senha
+
+Profissionais: CRM, dados pessoais e especialidade
+
+Sessões: Gerenciadas via sessionStorage
+
+💾 Armazenamento de Dados
+Backend: Dados em memória (array)
+
+Frontend: sessionStorage para dados de sessão
+
+Próxima Fase: Integração com banco de dados
+
+🎨 Design e Interface
+Tema: Azul profissional (#2563eb)
+
+Layout: Cards e componentes Bootstrap
+
+Responsivo: Mobile-first approach
+
+Ícones: Bootstrap Icons integrados
