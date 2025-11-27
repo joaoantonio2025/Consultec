@@ -1,373 +1,621 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login - Consultec</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-  <style>
-    :root {
-      --primary-blue: #2563eb;
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Dashboard Médico - Consultec</title>
+<style>
+  :root {
+    --primary-blue: #2563eb;
+    --secondary-green: #10b981;
+    --secondary-orange: #f59e0b;
+    --secondary-purple: #8b5cf6;
+    --text-dark: #333;
+    --text-medium: #555;
+    --bg-light: #f7f9fc;
+  }
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: var(--bg-light);
+    color: var(--text-dark);
+  }
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    background: #fff;
+    border-bottom: 1px solid #eee;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .navbar .logo {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: var(--text-dark);
+    text-decoration: none;
+  }
+  .navbar nav a {
+    margin: 0 15px;
+    text-decoration: none;
+    color: var(--text-dark);
+    font-weight: 600;
+  }
+  .navbar nav a.highlight {
+    background: var(--primary-blue);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 8px;
+  }
+
+  .dashboard-container {
+    max-width: 1400px;
+    margin: 40px auto;
+    padding: 0 20px;
+  }
+
+  .doctor-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+
+  .doctor-info h1 {
+    margin: 0 0 10px 0;
+    color: var(--text-dark);
+    font-size: 2rem;
+  }
+
+  .doctor-info p {
+    margin: 0;
+    color: var(--text-medium);
+    font-size: 1.1rem;
+  }
+
+  .doctor-stats {
+    display: flex;
+    gap: 30px;
+    text-align: center;
+  }
+
+  .doctor-stat {
+    padding: 0 20px;
+  }
+
+  .doctor-stat:not(:last-child) {
+    border-right: 2px solid #e2e8f0;
+  }
+
+  .doctor-stat-number {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--primary-blue);
+    margin-bottom: 5px;
+  }
+
+  .doctor-stat-label {
+    color: var(--text-medium);
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-bottom: 40px;
+  }
+
+  .card {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+
+  .card h3 {
+    margin-bottom: 20px;
+    color: var(--text-dark);
+    font-size: 1.3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .week-nav {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .week-nav button {
+    background: var(--primary-blue);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+
+  .calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+  }
+
+  .calendar-header {
+    text-align: center;
+    font-weight: 600;
+    color: var(--text-medium);
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+
+  .calendar-day {
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 10px;
+    min-height: 80px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .calendar-day:hover {
+    border-color: var(--primary-blue);
+    background: #f0f7ff;
+  }
+
+  .calendar-day.active {
+    border-color: var(--primary-blue);
+    background: #dbeafe;
+  }
+
+  .day-number {
+    font-weight: 600;
+    margin-bottom: 5px;
+  }
+
+  .appointment-slot {
+    background: var(--secondary-green);
+    color: white;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    margin-bottom: 2px;
+  }
+
+  .appointment-slot.busy {
+    background: var(--secondary-orange);
+  }
+
+  .patients-list {
+    max-height: 400px;
+    overflow-y: auto;
+  }
+
+  .patient-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+  }
+
+  .patient-item:last-child {
+    border-bottom: none;
+  }
+
+  .patient-info h4 {
+    margin: 0 0 5px 0;
+    color: var(--text-dark);
+  }
+
+  .patient-info p {
+    margin: 0;
+    color: var(--text-medium);
+    font-size: 0.9rem;
+  }
+
+  .patient-actions {
+    display: flex;
+    gap: 10px;
+  }
+
+  .btn-small {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.8rem;
+  }
+
+  .btn-primary {
+    background: var(--primary-blue);
+    color: white;
+  }
+
+  .btn-secondary {
+    background: #e2e8f0;
+    color: var(--text-dark);
+  }
+
+  .stats-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+
+  .stat-card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    text-align: center;
+  }
+
+  .stat-card .icon {
+    font-size: 2rem;
+    margin-bottom: 10px;
+  }
+
+  .stat-card .number {
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin-bottom: 5px;
+    color: var(--text-dark);
+  }
+
+  .stat-card .label {
+    color: var(--text-medium);
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  .filters {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .filter-select {
+    padding: 10px 15px;
+    border: 1.5px solid #ddd;
+    border-radius: 8px;
+    font-weight: 600;
+    background: white;
+  }
+
+  .add-schedule-btn {
+    background: var(--secondary-green);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 24px;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-bottom: 20px;
+  }
+
+  @media (max-width: 768px) {
+    .dashboard-grid {
+      grid-template-columns: 1fr;
     }
     
-    .auth-container {
-      min-height: 100vh;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    .doctor-header {
+      flex-direction: column;
+      gap: 20px;
+      text-align: center;
     }
     
-    .btn-google {
-      background: white;
-      color: #333;
-      border: 1px solid #ddd;
-      transition: all 0.3s ease;
+    .doctor-stats {
+      justify-content: center;
     }
     
-    .btn-google:hover {
-      background: #f8f9fa;
-      border-color: #ccc;
+    .calendar {
+      grid-template-columns: repeat(7, 1fr);
+      font-size: 0.8rem;
     }
     
-    .btn-primary {
-      background-color: var(--primary-blue);
-      border-color: var(--primary-blue);
+    .calendar-day {
+      min-height: 60px;
+      padding: 5px;
     }
-    
-    .btn-primary:hover {
-      background-color: #1e40af;
-      border-color: #1e40af;
-    }
-    
-    .btn-professional {
-      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-      color: white;
-      border: none;
-      transition: all 0.3s ease;
-    }
-    
-    .btn-professional:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
-      color: white;
-    }
-  </style>
+  }
+</style>
 </head>
 <body>
-  <div class="auth-container">
-    <nav class="navbar navbar-expand-lg navbar-dark">
-      <div class="container">
-        <a class="navbar-brand fw-bold" href="index.html">
-          <i class="bi bi-heart-pulse me-2"></i>Consultec
-        </a>
-        <div class="navbar-nav ms-auto">
-          <a href="cadastro.html" class="nav-link">Cadastrar</a>
-        </div>
-      </div>
+  <header class="navbar">
+    <a href="index.html" class="logo">Consultec</a>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="dashboard-admin.html">Dashboard Admin</a>
+      <a href="dashboard-medico.html" class="highlight">Dashboard Médico</a>
+      <a href="especialidades.html">Especialidades</a>
     </nav>
+  </header>
 
-    <div class="container py-5">
-      <div class="row justify-content-center">
-        <div class="col-md-8 col-lg-6">
-          <div class="card shadow-lg border-0">
-            <div class="card-body p-5">
-              <div class="text-center mb-4">
-                <i class="bi bi-heart-pulse text-primary" style="font-size: 3rem;"></i>
-                <h2 class="mt-3 fw-bold">Acesse sua conta</h2>
-                <p class="text-muted">Bem-vindo de volta! Escolha seu tipo de acesso.</p>
-              </div>
+  <div class="dashboard-container">
+    <div class="doctor-header">
+      <div class="doctor-info">
+        <h1>Dr. Carlos Monteiro</h1>
+        <p>Cardiologia - CRM: 12345/SP</p>
+      </div>
+      <div class="doctor-stats">
+        <div class="doctor-stat">
+          <div class="doctor-stat-number" id="consultasMes">42</div>
+          <div class="doctor-stat-label">Consultas/Mês</div>
+        </div>
+        <div class="doctor-stat">
+          <div class="doctor-stat-number" id="taxaComparecimento">92%</div>
+          <div class="doctor-stat-label">Comparecimento</div>
+        </div>
+        <div class="doctor-stat">
+          <div class="doctor-stat-number" id="avaliacao">4.8</div>
+          <div class="doctor-stat-label">Avaliação</div>
+        </div>
+      </div>
+    </div>
 
-              <div class="text-center mb-4">
-                <button class="btn btn-professional btn-lg w-100 py-3 fw-semibold mb-3" 
-                        data-bs-toggle="modal" data-bs-target="#professionalLoginModal">
-                  <i class="bi bi-briefcase me-2"></i>Área do Profissional
-                </button>
-                <small class="text-muted">Acesso exclusivo para médicos e profissionais de saúde</small>
-              </div>
+    <button class="add-schedule-btn" onclick="openScheduleModal()">
+      📅 Abrir Novos Horários
+    </button>
 
-              <hr class="my-4">
+    <div class="filters">
+      <select class="filter-select" id="filterDate">
+        <option value="">Todas as datas</option>
+        <option>Hoje</option>
+        <option>Amanhã</option>
+        <option>Esta semana</option>
+        <option>Este mês</option>
+      </select>
+      <select class="filter-select" id="filterStatus">
+        <option value="">Todos os status</option>
+        <option>Agendada</option>
+        <option>Concluída</option>
+        <option>Cancelada</option>
+      </select>
+      <button class="filter-select" style="background: var(--primary-blue); color: white; cursor: pointer;" onclick="applyDoctorFilters()">
+        Aplicar Filtros
+      </button>
+    </div>
 
-              <h5 class="fw-bold mb-4 text-center">
-                <i class="bi bi-person me-2"></i>Login para Pacientes
-              </h5>
+    <div class="stats-cards">
+      <div class="stat-card">
+        <div class="icon">❤️</div>
+        <div class="number" id="cardioCount">35</div>
+        <div class="label">Cardiologia</div>
+      </div>
+      <div class="stat-card">
+        <div class="icon">🦴</div>
+        <div class="number" id="ortoCount">28</div>
+        <div class="label">Ortopedia</div>
+      </div>
+      <div class="stat-card">
+        <div class="icon">👶</div>
+        <div class="number" id="pedCount">15</div>
+        <div class="label">Pediatria</div>
+      </div>
+      <div class="stat-card">
+        <div class="icon">📊</div>
+        <div class="number" id="totalEarnings">R$ 12.540</div>
+        <div class="label">Faturamento</div>
+      </div>
+    </div>
 
-              <form id="loginForm">
-                <div class="mb-3">
-                  <label for="email" class="form-label fw-semibold">Email</label>
-                  <input type="email" class="form-control form-control-lg" id="email" placeholder="seu@email.com" required>
-                </div>
+    <div class="dashboard-grid">
+      <div class="card">
+        <h3>
+          Agenda Semanal
+          <div class="week-nav">
+            <button onclick="previousWeek()">‹</button>
+            <span id="currentWeek">25-31 Mar</span>
+            <button onclick="nextWeek()">›</button>
+          </div>
+        </h3>
+        <div class="calendar">
+          <div class="calendar-header">Seg</div>
+          <div class="calendar-header">Ter</div>
+          <div class="calendar-header">Qua</div>
+          <div class="calendar-header">Qui</div>
+          <div class="calendar-header">Sex</div>
+          <div class="calendar-header">Sáb</div>
+          <div class="calendar-header">Dom</div>
+          <div id="calendarDays"></div>
+        </div>
+      </div>
 
-                <div class="mb-3">
-                  <label for="cpf" class="form-label fw-semibold">CPF</label>
-                  <input type="text" class="form-control form-control-lg" id="cpf" placeholder="000.000.000-00" required>
-                </div>
-
-                <div class="mb-3">
-                  <label for="rg" class="form-label fw-semibold">RG</label>
-                  <input type="text" class="form-control form-control-lg" id="rg" placeholder="00.000.000-0" required>
-                </div>
-
-                <div class="mb-3">
-                  <label for="password" class="form-label fw-semibold">Senha</label>
-                  <input type="password" class="form-control form-control-lg" id="password" placeholder="Sua senha" required>
-                </div>
-
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="rememberMe">
-                    <label class="form-check-label small" for="rememberMe">
-                      Lembrar-me
-                    </label>
-                  </div>
-                  <a href="#" class="text-primary text-decoration-none small fw-semibold">
-                    Esqueceu sua senha?
-                  </a>
-                </div>
-
-                <button type="submit" class="btn btn-primary btn-lg w-100 py-3 fw-semibold mb-3">
-                  <i class="bi bi-box-arrow-in-right me-2"></i>Entrar como Paciente
-                </button>
-
-                <div class="position-relative text-center my-4">
-                  <hr>
-                  <span class="position-absolute top-50 start-50 translate-middle bg-white px-3 text-muted">
-                    ou
-                  </span>
-                </div>
-
-                <button type="button" class="btn btn-google btn-lg w-100 py-3 fw-semibold">
-                  <i class="bi bi-google me-2"></i>Entrar com Google
-                </button>
-
-                <div class="text-center mt-4">
-                  <p class="text-muted">
-                    Não tem uma conta? 
-                    <a href="cadastro.html" class="text-primary text-decoration-none fw-semibold">Cadastre-se</a>
-                  </p>
-                </div>
-              </form>
+      <div class="card">
+        <h3>Pacientes Agendados</h3>
+        <div class="patients-list">
+          <div class="patient-item">
+            <div class="patient-info">
+              <h4>Maria Silva</h4>
+              <p>28/03/2024 - 09:00</p>
+              <p>📞 (11) 99999-9999</p>
+            </div>
+            <div class="patient-actions">
+              <button class="btn-small btn-primary" onclick="confirmAppointment(this)">Confirmar</button>
+              <button class="btn-small btn-secondary" onclick="contactPatient(this)">Contatar</button>
             </div>
           </div>
-
-          <div class="text-center mt-4">
-            <p class="text-white mb-0">
-              © 2025 Consultec. Todos os direitos reservados.
-              <a href="#" class="text-white text-decoration-none mx-2">Termos</a>
-              <a href="#" class="text-white text-decoration-none mx-2">Privacidade</a>
-            </p>
+          <div class="patient-item">
+            <div class="patient-info">
+              <h4>João Santos</h4>
+              <p>28/03/2024 - 10:30</p>
+              <p>📞 (11) 98888-8888</p>
+            </div>
+            <div class="patient-actions">
+              <button class="btn-small btn-primary" onclick="confirmAppointment(this)">Confirmar</button>
+              <button class="btn-small btn-secondary" onclick="contactPatient(this)">Contatar</button>
+            </div>
+          </div>
+          <div class="patient-item">
+            <div class="patient-info">
+              <h4>Ana Oliveira</h4>
+              <p>29/03/2024 - 14:00</p>
+              <p>📞 (11) 97777-7777</p>
+            </div>
+            <div class="patient-actions">
+              <button class="btn-small btn-primary" onclick="confirmAppointment(this)">Confirmar</button>
+              <button class="btn-small btn-secondary" onclick="contactPatient(this)">Contatar</button>
+            </div>
+          </div>
+          <div class="patient-item">
+            <div class="patient-info">
+              <h4>Pedro Costa</h4>
+              <p>29/03/2024 - 15:30</p>
+              <p>📞 (11) 96666-6666</p>
+            </div>
+            <div class="patient-actions">
+              <button class="btn-small btn-primary" onclick="confirmAppointment(this)">Confirmar</button>
+              <button class="btn-small btn-secondary" onclick="contactPatient(this)">Contatar</button>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="modal fade" id="professionalLoginModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title fw-bold">
-            <i class="bi bi-briefcase text-success me-2"></i>Área do Profissional
-          </h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
-        <div class="modal-body">
-          <form id="professionalLoginForm">
-            <div class="mb-3">
-              <label for="professionalCrm" class="form-label fw-semibold">CRM/Registro Profissional *</label>
-              <input type="text" class="form-control" id="professionalCrm" placeholder="Seu número de registro" required>
-            </div>
-
-            <div class="mb-3">
-              <label for="professionalName" class="form-label fw-semibold">Nome Completo *</label>
-              <input type="text" class="form-control" id="professionalName" placeholder="Seu nome completo" required>
-            </div>
-
-            <div class="mb-3">
-              <label for="professionalCpf" class="form-label fw-semibold">CPF *</label>
-              <input type="text" class="form-control" id="professionalCpf" placeholder="000.000.000-00" required>
-            </div>
-
-            <div class="mb-3">
-              <label for="professionalRg" class="form-label fw-semibold">RG *</label>
-              <input type="text" class="form-control" id="professionalRg" placeholder="00.000.000-0" required>
-            </div>
-
-            <div class="mb-3">
-              <label for="professionalEmail" class="form-label fw-semibold">Email *</label>
-              <input type="email" class="form-control" id="professionalEmail" placeholder="seu@email.com" required>
-            </div>
-
-            <div class="mb-3">
-              <label for="professionalSpecialty" class="form-label fw-semibold">Especialidade *</label>
-              <select class="form-select" id="professionalSpecialty" required>
-                <option value="">Selecione sua especialidade</option>
-                <option value="Cardiologia">Cardiologia</option>
-                <option value="Dermatologia">Dermatologia</option>
-                <option value="Ortopedia">Ortopedia</option>
-                <option value="Pediatria">Pediatria</option>
-                <option value="Neurologia">Neurologia</option>
-                <option value="Oftalmologia">Oftalmologia</option>
-                <option value="Clínico Geral">Clínico Geral</option>
-                <option value="Outra">Outra</option>
-              </select>
-            </div>
-
-            <div class="mb-4">
-              <label for="professionalPassword" class="form-label fw-semibold">Senha de Acesso *</label>
-              <input type="password" class="form-control" id="professionalPassword" placeholder="Sua senha profissional" required>
-            </div>
-
-            <button type="submit" class="btn btn-success btn-lg w-100 py-3 fw-semibold">
-              <i class="bi bi-shield-check me-2"></i>Acessar Área Profissional
-            </button>
-          </form>
-
-          <div class="text-center mt-3">
-            <small class="text-muted">
-              É profissional mas ainda não tem cadastro? 
-              <a href="cadastro.html" class="text-success text-decoration-none fw-semibold">Cadastre-se aqui</a>
-            </small>
-          </div>
-        </div>
-      </div>
+  <div id="scheduleModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:9999;">
+    <div style="background:#fff; max-width:500px; margin:100px auto; padding:30px; border-radius:12px; position:relative;">
+      <button onclick="closeScheduleModal()" style="position:absolute; top:15px; right:15px; border:none; background:none; font-size:24px; cursor:pointer;">×</button>
+      <h3 style="margin-bottom:20px;">Cadastrar Novos Horários</h3>
+      <form id="doctorScheduleForm">
+        <label style="display:block; margin-bottom:8px; font-weight:600;">Data:</label>
+        <input type="date" style="width:100%; padding:10px; margin-bottom:15px; border:1.5px solid #ddd; border-radius:8px;" required />
+        
+        <label style="display:block; margin-bottom:8px; font-weight:600;">Horário Início:</label>
+        <input type="time" style="width:100%; padding:10px; margin-bottom:15px; border:1.5px solid #ddd; border-radius:8px;" required />
+        
+        <label style="display:block; margin-bottom:8px; font-weight:600;">Horário Fim:</label>
+        <input type="time" style="width:100%; padding:10px; margin-bottom:20px; border:1.5px solid #ddd; border-radius:8px;" required />
+        
+        <button type="submit" style="background:var(--secondary-green); color:white; border:none; border-radius:8px; padding:12px 24px; font-weight:700; cursor:pointer; width:100%;">
+          Cadastrar Horários
+        </button>
+      </form>
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  
-  <script>
-    document.getElementById("loginForm").addEventListener("submit", async function(e) {
-      e.preventDefault();
+<script>
+  const doctorData = {
+    consultasMes: 42,
+    taxaComparecimento: 92,
+    avaliacao: 4.8,
+    especialidades: {
+      Cardiologia: 35,
+      Ortopedia: 28,
+      Pediatria: 15
+    },
+    faturamento: 12540
+  };
 
-      const email = document.getElementById("email").value;
-      const cpf = document.getElementById("cpf").value;
-      const rg = document.getElementById("rg").value;
-      const password = document.getElementById("password").value;
+  let currentWeek = 0;
 
-      const submitBtn = this.querySelector('button[type="submit"]');
-      const originalText = submitBtn.innerHTML;
-      submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Entrando...';
-      submitBtn.disabled = true;
+  function updateDoctorDashboard() {
+    document.getElementById('consultasMes').textContent = doctorData.consultasMes;
+    document.getElementById('taxaComparecimento').textContent = doctorData.taxaComparecimento + '%';
+    document.getElementById('avaliacao').textContent = doctorData.avaliacao;
+    document.getElementById('cardioCount').textContent = doctorData.especialidades.Cardiologia;
+    document.getElementById('ortoCount').textContent = doctorData.especialidades.Ortopedia;
+    document.getElementById('pedCount').textContent = doctorData.especialidades.Pediatria;
+    document.getElementById('totalEarnings').textContent = 'R$ ' + doctorData.faturamento.toLocaleString();
+    
+    renderCalendar();
+  }
 
-      try {
-        const response = await fetch('http://localhost:3000/login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            email: email,
-            senha: password,
-            cpf: cpf,
-            rg: rg
-          })
-        });
-
-        const result = await response.json();
-
-        if (response.ok) {
-          sessionStorage.setItem('userType', 'paciente');
-          sessionStorage.setItem('userEmail', email);
-          sessionStorage.setItem('userName', result.usuario.nome);
-          
-          alert('✅ Login realizado via API!');
-          window.location.href = "index.html";
-        } else {
-          alert('❌ ' + (result.error || 'Credenciais inválidas'));
-        }
-      } catch (error) {
-        alert('❌ Erro de conexão com a API. Certifique-se de que o servidor está rodando na porta 3000.');
-      } finally {
-        submitBtn.innerHTML = originalText;
-        submitBtn.disabled = false;
-      }
+  function renderCalendar() {
+    const calendarDays = document.getElementById('calendarDays');
+    calendarDays.innerHTML = '';
+    
+    const days = ['25', '26', '27', '28', '29', '30', '31'];
+    const appointments = {
+      '25': ['09:00', '14:30'],
+      '26': ['10:30', '15:00', '16:30'],
+      '28': ['09:00', '10:30', '14:00', '15:30'],
+      '29': ['11:00', '13:30']
+    };
+    
+    days.forEach(day => {
+      const dayElement = document.createElement('div');
+      dayElement.className = 'calendar-day';
+      dayElement.innerHTML = `
+        <div class="day-number">${day}</div>
+        ${appointments[day] ? appointments[day].map(time => 
+          `<div class="appointment-slot ${time === '09:00' ? 'busy' : ''}">${time}</div>`
+        ).join('') : ''}
+      `;
+      calendarDays.appendChild(dayElement);
     });
+  }
 
-    document.getElementById("professionalLoginForm").addEventListener("submit", function(e) {
-      e.preventDefault();
+  function previousWeek() {
+    currentWeek--;
+    updateWeekDisplay();
+  }
 
-      const crm = document.getElementById("professionalCrm").value;
-      const name = document.getElementById("professionalName").value;
-      const cpf = document.getElementById("professionalCpf").value;
-      const rg = document.getElementById("professionalRg").value;
-      const email = document.getElementById("professionalEmail").value;
-      const specialty = document.getElementById("professionalSpecialty").value;
-      const password = document.getElementById("professionalPassword").value;
+  function nextWeek() {
+    currentWeek++;
+    updateWeekDisplay();
+  }
 
-      const submitBtn = this.querySelector('button[type="submit"]');
-      const originalText = submitBtn.innerHTML;
-      submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Validando acesso...';
-      submitBtn.disabled = true;
+  function updateWeekDisplay() {
+    const weeks = ['18-24 Mar', '25-31 Mar', '01-07 Abr', '08-14 Abr'];
+    const currentIndex = (1 + currentWeek + weeks.length) % weeks.length;
+    document.getElementById('currentWeek').textContent = weeks[currentIndex];
+    renderCalendar();
+  }
 
-      setTimeout(() => {
-        if (crm && name && cpf && rg && email && specialty && password) {
-          sessionStorage.setItem('userType', 'profissional');
-          sessionStorage.setItem('professionalCrm', crm);
-          sessionStorage.setItem('professionalName', name);
-          sessionStorage.setItem('professionalSpecialty', specialty);
-          sessionStorage.setItem('userEmail', email);
-          
-          alert("Acesso profissional concedido! Redirecionando...");
+  function applyDoctorFilters() {
+    const dateFilter = document.getElementById('filterDate').value;
+    const statusFilter = document.getElementById('filterStatus').value;
+    
+    alert(`Filtros aplicados:\nData: ${dateFilter || 'Todas'}\nStatus: ${statusFilter || 'Todos'}`);
+  }
 
-          const modal = bootstrap.Modal.getInstance(document.getElementById('professionalLoginModal'));
-          modal.hide();
+  function confirmAppointment(button) {
+    button.textContent = 'Confirmada ✓';
+    button.style.background = '#10b981';
+    button.disabled = true;
+  }
 
-          window.location.href = "profissional-dashboard.html";
-        } else {
-          alert("Por favor, preencha todos os campos do acesso profissional.");
-          submitBtn.innerHTML = originalText;
-          submitBtn.disabled = false;
-        }
-      }, 1500);
-    });
+  function contactPatient(button) {
+    const patientItem = button.closest('.patient-item');
+    const patientName = patientItem.querySelector('h4').textContent;
+    alert(`Entrando em contato com ${patientName}...`);
+  }
 
-    document.querySelector('.btn-google').addEventListener('click', function() {
-      alert("Funcionalidade de login com Google será implementada em breve!");
-    });
+  function openScheduleModal() {
+    document.getElementById('scheduleModal').style.display = 'block';
+  }
 
-    function aplicarMascaraCPF(input) {
-      input.addEventListener('input', function(e) {
-        let value = e.target.value.replace(/\D/g, '');
-        if (value.length > 11) value = value.substring(0, 11);
-        
-        if (value.length > 9) {
-          value = value.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
-        } else if (value.length > 6) {
-          value = value.replace(/(\d{3})(\d{3})(\d{0,3})/, '$1.$2.$3');
-        } else if (value.length > 3) {
-          value = value.replace(/(\d{3})(\d{0,3})/, '$1.$2');
-        }
-        
-        e.target.value = value;
-      });
-    }
+  function closeScheduleModal() {
+    document.getElementById('scheduleModal').style.display = 'none';
+  }
 
-    function aplicarMascaraRG(input) {
-      input.addEventListener('input', function(e) {
-        let value = e.target.value.replace(/\D/g, '');
-        if (value.length > 9) value = value.substring(0, 9);
-        
-        if (value.length > 2) {
-          value = value.replace(/(\d{2})(\d{3})(\d{3})(\d{1})/, '$1.$2.$3-$4');
-        } else if (value.length > 0) {
-          value = value.replace(/(\d{0,2})/, '$1');
-        }
-        
-        e.target.value = value;
-      });
-    }
+  document.getElementById('doctorScheduleForm')?.addEventListener('submit', function(e) {
+    e.preventDefault();
+    alert('Horários cadastrados com sucesso!');
+    closeScheduleModal();
+    this.reset();
+  });
 
-    document.addEventListener('DOMContentLoaded', function() {
-      aplicarMascaraCPF(document.getElementById('cpf'));
-      aplicarMascaraRG(document.getElementById('rg'));
-
-      aplicarMascaraCPF(document.getElementById('professionalCpf'));
-      aplicarMascaraRG(document.getElementById('professionalRg'));
-
-      const userType = sessionStorage.getItem('userType');
-      if (userType === 'profissional') {
-        window.location.href = "profissional-dashboard.html";
-      }
-    });
-  </script>
+  document.addEventListener('DOMContentLoaded', function() {
+    updateDoctorDashboard();
+    updateWeekDisplay();
+  });
+</script>
 </body>
 </html>
