@@ -1,0 +1,72 @@
+import pyotp
+import qrcode
+import time
+import os
+import json
+import webbrowser
+
+USUARIOS_FILE = "usuarios.json"
+
+
+def carregar_usuarios():
+    if os.path.exists(USUARIOS_FILE):
+        with open(USUARIOS_FILE, "r") as f:
+            return json.load(f)
+    return {}
+
+def salvar_usuarios(usuarios):
+    with open(USUARIOS_FILE, "w") as f:
+        json.dump(usuarios, f)
+
+def gerar_chave():
+    return pyotp.random_base32()
+
+def gerar_qrcode(chave, usuario):
+    totp = pyotp.TOTP(chave)
+    link = totp.provisioning_uri(name=usuario, issuer_name="Consultec")
+    arquivo = f"qrcode_{usuario.replace(' ', '_')}.png"
+    qrcode.make(link).save(arquivo)
+    webbrowser.open(arquivo)
+    return totp, link, arquivo
+
+def verificar_codigo(totp, codigo):
+    return totp.verify(codigo, valid_window=1)
+
+
+usuarios = carregar_usuarios()
+
+usuario = input("Digite o nome ou e-mail do usuário: ").strip()
+
+if usuario in usuarios:
+    chave_mestre = usuarios[usuario]
+    print(f"Usuário existente encontrado.")
+else:
+    chave_mestre = gerar_chave()
+    usuarios[usuario] = chave_mestre
+    salvar_usuarios(usuarios)
+    print(f"Usuário criado com chave secreta: {chave_mestre}")
+
+totp, link, arquivo_qrcode = gerar_qrcode(chave_mestre, usuario)
+
+print(f"\nQR Code gerado e aberto automaticamente.")
+
+print("\nAgora vamos testar a verificação do código:")
+
+while True:
+    tempo_restante = 30 - (int(time.time()) % 30)
+    print(f"\n(O código atual expira em {tempo_restante} segundos)")
+
+    codigo_usuario = input("Digite o código do app (ou 'sair' para encerrar): ").strip()
+
+    if codigo_usuario.lower() == "sair":
+        print("Encerrando")
+        break
+
+    if not codigo_usuario.isdigit() or len(codigo_usuario) != 6:
+        print("Digite um código numérico de 6 dígitos!")
+        continue
+
+    if verificar_codigo(totp, codigo_usuario):
+        print("Código válido! Acesso permitido.")
+    else:
+        print("Código inválido! Tente novamente.")
